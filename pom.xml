@@ -17,6 +17,13 @@
   <description>This is the astah-macro plugin for Atlassian Confluence.</description>
   <packaging>atlassian-plugin</packaging>
 
+  <scm>
+    <connection>scm:git:git://git@bitbucket.org/kompiro/astah-macro-plugin-for-confluence.git</connection>
+    <developerConnection>scm:git:git://git@bitbucket.org/kompiro/astah-macro-plugin-for-confluence.git</developerConnection>
+    <tag>HEAD</tag>
+    <url>https://bitbucket.org/kompiro/astah-macro-plugin-for-confluence</url>
+  </scm>
+
   <dependencies>
     <dependency>
       <groupId>commons-io</groupId>
