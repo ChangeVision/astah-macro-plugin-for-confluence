@@ -1,0 +1,69 @@
+		.diagram_view {
+			width: 650px;
+			border: solid 1px #EEE;
+		}
+		.controls-wrapper {
+			overflow: hidden;
+			height: 22px;
+			width: 640px;
+			float:left; 
+			color:#FFF;
+			font:14px Lucida Grande, Verdana, Lucida Sans Regular, Lucida Sans Unicode, Arial, sans-serif, ÉÅÉCÉäÉI, Osaka; 
+			font-weight:bold; 
+			text-shadow:#000 0 1px 0; 
+			padding: 1px 5px 1px 5px;
+			
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0.95, #73a220), color-stop(0.00, #a2d93f));
+			background: -webkit-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: -moz-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: -o-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: -ms-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a2d93f', endColorstr='#73a220');
+		}
+		.controls{
+			float: right;
+			height: 22px;
+ 
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0.95, #73a220), color-stop(0.00, #a2d93f));
+			background: -webkit-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: -moz-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: -o-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: -ms-linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			background: linear-gradient(top, #a2d93f 0%, #73a220 95%);
+			filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a2d93f', endColorstr='#73a220');
+		}
+		.comment {
+			line-height: 22px;
+			font-size: 0.8em;
+			vertical-align: top;
+		}
+		.diagramName {
+			line-height: 22px;
+			-webkit-text-overflow: ellipsis;
+			-o-text-overflow: ellipsis;
+			text-overflow: ellipsis;
+			vertical-align: top;
+		}
+		.diagram {
+			width : 640px;
+			min-height : 480px;
+			bottom: 24px;
+		}
+		.diagram_image{
+			width : 640px;
+			vertical-align : center;
+		}
+		.page {
+			line-height: 22px;
+			-webkit-text-overflow: ellipsis;
+			-o-text-overflow: ellipsis;
+			text-overflow: ellipsis;
+			vertical-align: top;
+		}
+		a.asta_file {
+			color: white;
+		}
+		img.prev, img.next {
+			border: none;
+		}

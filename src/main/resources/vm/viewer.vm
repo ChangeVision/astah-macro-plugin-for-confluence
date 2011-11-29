@@ -1,0 +1,34 @@
+#requireResource("confluence.web.resources:ajs")
+#requireResource("com.change_vision.astah.astah-confluence-macro:viewer")
+#requireResource("com.change_vision.astah.astah-confluence-macro:colorbox")
+<div id="${id}_view" class="diagram_view">
+	<div id="${id}_controls-wrapper" class="controls-wrapper">
+		<span id="${id}_page" class="page"></span>
+		<span id="${id}_diagramName" class="diagramName"></span>
+		<div id="${id}_controls" class="controls">
+			<a href="javascript:void(0)" id="${id}_prev"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAACTElEQVR42u2Vb0gTcRjH809BYBTkC+lFUBRYRwQNjF4Z9KKIaBVSGlKJNdH8R2sNOkYT7M+KZWbLFys0bdnmGeeWujlpc+RyVisrFFOWLsI3RWVFOHf39Nza0fGzjetF7/zB9+55vt/j8/zu4O4WAcB/0QL438G4UgTJzeRC05Jk6WIthcsBpkj6VQmAaahMKTzRbaUT3k6NVus+rdF8wZoiMiVN0wFapxvDeqXIIKEkcP9xVUk/08HC15kfYGmzCuaOeJZfXlk16OjqgW/ff0JLq4VHb6sUPA+OKlCpSgdtDAtj4+9gPBTmJsPTnPFqfQSz29Wn1K9YRze8nZiCiVA4Gpr8wF+rvyFk20lwDJiTs63kZHn1m7v32mHo+WsIDo9w/sCLqG9gSOhxxwzXdMcCwZcjqNGoPxAUMj44PAoXDcY5KTh2iDcrlPsOvGftLugfeAZu75PZhz2P+C6nB7pd3picfT7wPn7Kuz3+iJiheI8vALpztXPkjqXw1SjT0aITnxvNLcCwTmhnnVGLzc512HtBe1bPHSoojNxqbgOm0/U7s3ZyDxxuUJ+h54PFRlJvRl0/mH/k0yWjCcxNVmi9b+fKKtQR9Gszs7JuHi4smrlc1wjmZlssK61Qz5JgEi4dQKGu7Nq9d7rmQh0UqyoFMy+ebUE17FHmfTxvaIBjxWWCmStyZL2+uNaiDOvWZ/fiWUFcm52Rsdy0YeMmFus1JDjZgFRJv5SiqCVxnxy+TKFQLBZ7+R8gvT418fA/j082mIQkyxb+IH/VL0ASsPuWBIiFAAAAAElFTkSuQmCC" alt="Prev"  class="prev"/></a>
+			<a href="javascript:void(0)" id="${id}_next"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAWCAYAAADEtGw7AAACVElEQVR42u2UX0hTURzHmxVEpUJ/HopoD9FD0Zu93KSaa22oIb3sISJ6iVVk4P/NzZt3ws2J5VJKIqirm03DuXSaTm02V2sjQdESKpB6if5B28pFMLdfv2NeuMZZrIfoxQMffuf8vvf3/R3uufesAoB/woox3RhHBiIT1zTtr42lRQqFYg3NhK7RkZqSuBfZKoparXa1RNuHZNE0GlLTtTx/ee5qk/UDziulDXDITaaa7/UWyxucF9MbpDbOFtrssfDXGPj8T8FYU/sOc2ZkM7Kt3e748SUyD6NeH1QZjG8xZ0C2SBukMs5sar4emX05BzMvXsUxookf2Frze9RuNTRaYyT3fPb1ojY47IXySj1pfok0/tOOs/j6K9HQs2kYHXuS9PqCiUBwMh7EdVd3L3Q4nOAPTBANvOOohSbjgdAUOF0DoK9mPzFMLmmwjmpsYuuinoePoafPk3T1eQBJ9g89ivcPjYHLPQz33SMkkjyJi9rgyHhSsHWBJr8wjB57xI9hmXFJuTHa6XwAd+zORMc9d8Lm6IVGayscVqrmL5bqFxzdAyAsae13XcBbrkHBsePEsBNRqtXqDaLfMuOzF8rCt2090NLaBtUsD0c1hRHM25Dz54rLvhGt+YYAVUYz5Ck1nzEvIPkMw2ziOC4j5eGdOHVmocJQB8yBQx+Xigp0Om49xt0nT+ugpIKFnP0MObCbyBGVSpWd1i8tl+8yYUEDkpfzq0hsunH7jp0tGDnkYG5RUeZvu5OlfwnRi2TSPCGtHZP3JD4sRurvjXHlov//xj8BYmyom+p0cgsAAAAASUVORK5CYII=" alt="Next" class="next"/></a>
+		</div>
+	</div>
+	<div id="${id}_main" class="main">
+		<div id="${id}_contents" class="contents">
+			<div id="${id}_diagram" class="diagram">
+				<img src="$req.contextPath/download/resources/com.change_vision.astah.astah-confluence-macro/images/loading.png" id="${id}_diagram_image" class="diagram_image"/>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	AJS.toInit(function () {
+		init_viewer("${id}",${attachmentId},${attachmentVersion});
+		jQuery("#${id}_diagram_image").colorbox({
+		href:function(){
+			return jQuery(this).attr("src");
+		},
+		title:function(){
+			return jQuery("#${id}_diagramName").text()
+		}
+		});
+	});
+</script>
+<span style="clear:both"></span>

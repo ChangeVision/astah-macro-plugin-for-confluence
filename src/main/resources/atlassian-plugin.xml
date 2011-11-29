@@ -1,0 +1,50 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+    </plugin-info>>
+
+    <resource key="images" name="images/" type="download" location="images"/>
+    <xhtml-macro name="astah"
+                 class="com.change_vision.astah.macro.DiagramsMacro"
+                 key="astah"
+                 icon="/download/resources/com.change_vision.astah.astah-confluence-macro/images/class.png"
+                 labeh="Astah Diagrams">
+      <description>Inserts Astah diagrams in the pages</description>
+        <category name="development"/>
+        <category name="media"/>
+        <parameters>
+      <!-- page and name are reserved by AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage -->
+      <parameter name="page" type="confluence-content"/>
+          <parameter name="name" type="attachment" required="true">
+          </parameter>
+        </parameters>
+    </xhtml-macro>
+
+  <web-resource key="colorbox">
+      <resource type="download" name="colorbox.js" location="js/jquery.colorbox.js"/>
+      <resource type="download" name="colorbox.css" location="css/colorbox.css"/>
+  </web-resource>
+
+
+  <web-resource key="viewer">
+      <resource type="download" name="viewer.js" location="js/viewer.js"/>
+      <resource type="download" name="viewer.css" location="css/viewer.css"/>
+  </web-resource>
+
+  <web-resource key="macro-browser-fields" name="Macro Browser Smart Fields">
+        <resource type="download" name="macro.js" location="js/macro.js" />
+        <context>macro-browser</context>
+    </web-resource>
+
+
+  <rest key="rest-service-resources" path="/astah" version="1.0">
+        <description>REST resource for the Astah Macro Plugin will be provided.</description>
+    </rest>
+
+    <component-import key="settingsManager" interface="com.atlassian.confluence.setup.settings.SettingsManager"/>
+    <component-import key="bootstrapManager" interface="com.atlassian.confluence.setup.BootstrapManager"/>
+    <component name="asta file attachment listener" class="com.change_vision.astah.listener.AttachmentListener" key="attachmentListener"/>
+    <component name="plugin install listener" class="com.change_vision.astah.listener.PluginListener" key="pluginListener"/>
+</atlassian-plugin>

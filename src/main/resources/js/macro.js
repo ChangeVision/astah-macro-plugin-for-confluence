@@ -1,0 +1,1 @@
+AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage("astah", ["asta", "jude"]);
