@@ -1,13 +1,14 @@
-You have successfully created a plugin using the Confluence plugin archetype!
+"Astah Macro Plugin for Confluence" allows you to easily insert the
+diagram images that you created with Astah such as UML 2.x diagrams, ER
+Diagram, Mind Map, Flowchart, Requirement Diagram, CRUD and etc onto
+Confluence. The step is intuitive and easy. [Astah] Macro will be added
+in the [Select Macro] list and all you do is go on there and choose a file that contains diagrams you want to put on Confluence.
 
-Here are the SDK commands you'll use immediately:
+It uploads all the diagram images that one file contains, and you can switch the diagram image view like a slide. Furthermore, by clicking each diagram image, it expands to the full-size, so it can be compact and also can be enlarged when you need to see the details.
 
-* atlas-run   -- installs this plugin into Confluence and starts it on http://localhost:1990/confluence
-* atlas-debug -- same as atlas-run, but allows a debugger to attach at port 5005
-* atlas-cli   -- after atlas-run or atlas-debug, opens a Maven command line window:
-                 - 'pi' reinstalls the plugin into the running Confluence instance
-* atlas-help  -- prints description for all commands in the SDK
+No need to export each diagrams into image files, just select the .asta file (Astah's file format) straight from the Macro menu. It is swift and efficient to share diagrams and communicate with others by reviewing them directly on the same page.
 
-Full documentation is always available at:
+Astah is a system design tool to visualize your software design by supporting UML 2.x, Mind Map, ERD, Flowchart, DFD, Requirement Diagram, CRUD and more with an ability to convert models among them to enable you to see one model in a myriad of perspectives.  http://astah.net/
 
-http://confluence.atlassian.com/display/DEVNET/Developing+your+Plugin+using+the+Atlassian+Plugin+SDK
+Diagrams created with the free edition, Astah Community can go on the Confluence with this Plug-in.
+
