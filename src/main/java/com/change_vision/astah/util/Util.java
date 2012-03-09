@@ -9,7 +9,7 @@ public class Util {
 	private static final String SPRIT_CHAR;
 	static{
 		if(SystemUtils.IS_OS_WINDOWS){
-			SPRIT_CHAR = "\\";
+			SPRIT_CHAR = "\\\\";
 		}else{
 			SPRIT_CHAR = File.separator;			
 		}
