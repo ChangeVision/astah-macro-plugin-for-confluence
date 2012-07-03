@@ -4,34 +4,29 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.atlassian.confluence.content.render.xhtml.ConversionContext;
+import com.atlassian.confluence.core.ContentEntityObject;
 import com.atlassian.confluence.macro.Macro;
 import com.atlassian.confluence.macro.MacroExecutionException;
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.pages.AttachmentManager;
-import com.atlassian.confluence.pages.Page;
-import com.atlassian.confluence.pages.PageManager;
 import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
 import com.atlassian.confluence.util.velocity.VelocityUtils;
 
 public class DiagramsMacro implements Macro {
 
 	private final AttachmentManager attachmentManager;
-    private final PageManager pageManager;
     
-    public DiagramsMacro(AttachmentManager attachmentManager, PageManager pageManager) {
+    public DiagramsMacro(AttachmentManager attachmentManager) {
         this.attachmentManager = attachmentManager;
-        this.pageManager = pageManager;
     }
 
 
 	@Override
 	public String execute(Map<String, String> params, String bodyContent,
 			ConversionContext conversionContext) throws MacroExecutionException {
-		String space = params.containsKey("space") ? params.get("space") : conversionContext.getSpaceKey();
-		String page = params.containsKey("page") ? params.get("page") : conversionContext.getEntity().getTitle();
-		Page targetPage = pageManager.getPage(space, page);
+		ContentEntityObject entity = conversionContext.getEntity();
 		String attachmentTitle = params.get("name");
-		Attachment targetAttachment = attachmentManager.getAttachment(targetPage, attachmentTitle);
+		Attachment targetAttachment = attachmentManager.getAttachment(entity, attachmentTitle);
 		Map<String, Object> context = MacroUtils.defaultVelocityContext();
 		UUID uid =  UUID.randomUUID();
 		context.put("id", uid.toString());

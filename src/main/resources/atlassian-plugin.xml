@@ -18,6 +18,7 @@
       <!-- page and name are reserved by AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage -->
       <parameter name="page" type="confluence-content"/>
           <parameter name="name" type="attachment" required="true">
+              <alias name=""/>
           </parameter>
         </parameters>
     </xhtml-macro>
