@@ -147,7 +147,7 @@
   </build>
 
   <properties>
-    <confluence.version>4.2</confluence.version>
+    <confluence.version>4.2.7</confluence.version>
     <confluence.data.version>3.5</confluence.data.version>
     <amps.version>3.9.4</amps.version>
     <ao.version>0.17.3</ao.version>
