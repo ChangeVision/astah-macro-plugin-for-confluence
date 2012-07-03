@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.change_vision.astah</groupId>
   <artifactId>astah-confluence-macro</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1-SNAPSHOT</version>
 
   <organization>
     <name>Change Vision inc,</name>
@@ -147,9 +147,9 @@
   </build>
 
   <properties>
-    <confluence.version>4.1.6</confluence.version>
+    <confluence.version>4.2</confluence.version>
     <confluence.data.version>3.5</confluence.data.version>
-    <amps.version>3.8</amps.version>
+    <amps.version>3.9.4</amps.version>
     <ao.version>0.17.3</ao.version>
   </properties>
 
