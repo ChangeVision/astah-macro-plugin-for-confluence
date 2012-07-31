@@ -132,7 +132,7 @@
           <productVersion>${confluence.version}</productVersion>
           <productDataVersion>${confluence.data.version}</productDataVersion>
           <systemPropertyVariables>
-            <fastdev.mvn.command>${mvn.path}</fastdev.mvn.command>
+            <fastdev.mvn.command>${env.ATLAS_HOME}/bin/atlas-mvn</fastdev.mvn.command>
           </systemPropertyVariables>
         </configuration>
       </plugin>
