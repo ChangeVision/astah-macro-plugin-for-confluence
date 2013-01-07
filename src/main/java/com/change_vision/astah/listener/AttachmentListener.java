@@ -1,10 +1,13 @@
 package com.change_vision.astah.listener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimerTask;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -111,13 +114,34 @@ public class AttachmentListener implements DisposableBean{
 			log.info("args:" + command);
 		}
 		ProcessBuilder builder = new ProcessBuilder(commands);
+		builder.redirectErrorStream(true);
+		Process p = null;
 		try {
-			Process p = builder.start();
-			p.waitFor();
+			p = builder.start();
 		} catch (IOException e) {
-			log.error("error has occurred when exporting.",e);
-		} catch (InterruptedException e) {
-			log.error("interappted exporting", e);
+			log.error(e.getMessage(), e);
+		}
+		InputStream is = p.getInputStream();
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(is));
+			String line;
+			while (null != (line = reader.readLine())) {
+				log.info(line);
+			}
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+			try {
+				is.close();
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
 		}
 		List<File> pngFiles = new ArrayList<File>();
 		traverseFiles(pngFiles,new File(outputRoot));

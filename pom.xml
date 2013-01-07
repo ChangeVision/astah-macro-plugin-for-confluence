@@ -126,7 +126,7 @@
       <plugin>
         <groupId>com.atlassian.maven.plugins</groupId>
         <artifactId>maven-confluence-plugin</artifactId>
-        <version>3.8</version>
+        <version>4.1.1</version>
         <extensions>true</extensions>
         <configuration>
           <productVersion>${confluence.version}</productVersion>
@@ -146,11 +146,11 @@
     </plugins>
   </build>
 
-  <properties>
-    <confluence.version>4.2.7</confluence.version>
-    <confluence.data.version>3.5</confluence.data.version>
-    <amps.version>3.9.4</amps.version>
-    <ao.version>0.17.3</ao.version>
-  </properties>
+	<properties>
+		<confluence.version>4.3</confluence.version>
+		<confluence.data.version>4.3</confluence.data.version>
+		<amps.version>4.1.1</amps.version>
+		<plugin.testrunner.version>1.1</plugin.testrunner.version>
+	</properties>
 
 </project>

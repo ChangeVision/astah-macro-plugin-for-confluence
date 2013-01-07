@@ -1,6 +1,7 @@
 #requireResource("confluence.web.resources:ajs")
 #requireResource("com.change_vision.astah.astah-confluence-macro:viewer")
 #requireResource("com.change_vision.astah.astah-confluence-macro:colorbox")
+#requireResource("com.change_vision.astah.astah-confluence-macro:previewImage")
 <div id="${id}_view" class="diagram_view">
   <div id="${id}_controls-wrapper" class="controls-wrapper">
     <span id="${id}_page" class="page"></span>
@@ -19,18 +20,8 @@
   </div>
 </div>
 <script type="text/javascript">
-  AJS.toInit(function () {
-    init_viewer("${id}",${attachmentId},${attachmentVersion});
-    jQuery("#${id}_diagram_image").colorbox({
-    href:function(){
-      return jQuery(this).attr("src");
-    },
-    title:function(){
-      return jQuery("#${id}_diagramName").text()
-    },
-    scalePhotos:false,
-    scrolling:true
-    });
-  });
+var theId = "${id}";
+var theAttachmentId = ${attachmentId};
+var theAttachmentVersion = ${attachmentVersion};
 </script>
 <span style="clear:both"></span>

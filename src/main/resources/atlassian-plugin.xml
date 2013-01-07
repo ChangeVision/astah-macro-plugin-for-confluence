@@ -34,6 +34,10 @@
       <resource type="download" name="viewer.css" location="css/viewer.css"/>
   </web-resource>
 
+  <web-resource key="previewImage">
+      <resource type="download" name="previewImage.js" location="js/previewImage.js" />
+  </web-resource>
+
   <web-resource key="macro-browser-fields" name="Macro Browser Smart Fields">
         <resource type="download" name="macro.js" location="js/macro.js" />
         <context>macro-browser</context>
