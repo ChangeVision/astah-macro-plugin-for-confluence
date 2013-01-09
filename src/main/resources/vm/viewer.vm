@@ -14,14 +14,16 @@
   <div id="${id}_main" class="main">
     <div id="${id}_contents" class="contents">
       <div id="${id}_diagram" class="diagram">
-        <img src="$req.contextPath/download/resources/com.change_vision.astah.astah-confluence-macro/images/loading.png" id="${id}_diagram_image" class="diagram_image"/>
+        <img src="${req.contextPath}/download/resources/com.change_vision.astah.astah-confluence-macro/images/loading.png" id="${id}_diagram_image" class="diagram_image"/>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
-var theId = "${id}";
-var theAttachmentId = ${attachmentId};
-var theAttachmentVersion = ${attachmentVersion};
+  var contextPath = "${req.contextPath}";
+  var theId = "${id}";
+  var theAttachmentId = ${attachmentId};
+  var theAttachmentVersion = ${attachmentVersion};
+  previewImage(contextPath, theId, theAttachmentId, theAttachmentVersion);
 </script>
 <span style="clear:both"></span>
