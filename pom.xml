@@ -141,7 +141,7 @@
         </plugins>
     </build>
     <properties>
-        <confluence.version>4.3.3</confluence.version>
+        <confluence.version>4.3.5</confluence.version>
         <confluence.data.version>3.5</confluence.data.version>
         <amps.version>4.1.2</amps.version>
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
