@@ -1,6 +1,8 @@
 package com.change_vision.astah.listener;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +15,7 @@ import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
-import com.change_vision.astah.exporter.DiagramExporter;
+import com.change_vision.astah.exporter.DiagramExportRunnable;
  
 public class AttachmentListener implements DisposableBean{
 
@@ -27,14 +29,17 @@ public class AttachmentListener implements DisposableBean{
  
     protected EventPublisher eventPublisher;
     
-	private DiagramExporter diagramExporter;
+	private ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
+	private final String outputBase;
+
+	private final String astahBase;
  
     public AttachmentListener(BootstrapManager bootstrapManager,EventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
         eventPublisher.register(this);
-		String outputBase = bootstrapManager.getConfluenceHome() + File.separator +  "astah-exported";
-		String astahBase = bootstrapManager.getConfluenceHome() + File.separator + "astah";
-		diagramExporter = new DiagramExporter(astahBase,outputBase);
+		outputBase = bootstrapManager.getConfluenceHome() + File.separator +  "astah-exported";
+		astahBase = bootstrapManager.getConfluenceHome() + File.separator + "astah";
         logger.info("created attachment listener");
     }
  
@@ -61,7 +66,8 @@ public class AttachmentListener implements DisposableBean{
 			String extension = attachment.getFileExtension();
 			if(needsToExport(updateEvent, attachment) && isTargetExtension(extension)){
 				logger.info("start export : " + attachment.getId());
-				diagramExporter.export(attachment);
+				DiagramExportRunnable runnable = new DiagramExportRunnable(attachment, astahBase, outputBase);
+				scheduledExecutorService.execute(runnable);
 				logger.info("end export : " + attachment.getId());
 			}
 		}
@@ -93,8 +99,10 @@ public class AttachmentListener implements DisposableBean{
     public void destroy() throws Exception {
         eventPublisher.unregister(this);
     }
-    
-    void setDiagramExporter(DiagramExporter diagramExporter) {
-		this.diagramExporter = diagramExporter;
+
+	void setScheduledExecutorService(
+			ScheduledExecutorService scheduledExecutorService) {
+		this.scheduledExecutorService = scheduledExecutorService;
 	}
+
 }

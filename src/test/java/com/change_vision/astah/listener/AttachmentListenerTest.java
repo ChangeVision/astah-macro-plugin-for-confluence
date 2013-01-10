@@ -6,6 +6,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,15 +18,15 @@ import com.atlassian.confluence.event.events.content.attachment.AttachmentUpdate
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.event.api.EventPublisher;
-import com.change_vision.astah.exporter.DiagramExporter;
+import com.change_vision.astah.exporter.DiagramExportRunnable;
 
 public class AttachmentListenerTest {
 
 	@Mock
-	private BootstrapManager bootstrapManager = null;
+	private BootstrapManager bootstrapManager;
 
 	@Mock
-	private EventPublisher eventPublisher = null;
+	private EventPublisher eventPublisher;
 	
 	@Mock
 	private AttachmentCreateEvent createEvent;
@@ -46,7 +47,7 @@ public class AttachmentListenerTest {
 	private Attachment attachmentJuthFile;
 	
 	@Mock
-	private DiagramExporter diagramExporter;
+	private ScheduledExecutorService scheduledExecutorService;
 
 	@Mock
 	private Attachment attachmentNoExtensionFile;
@@ -61,7 +62,7 @@ public class AttachmentListenerTest {
 		MockitoAnnotations.initMocks(this);
 		
 		listener = new AttachmentListener(bootstrapManager , eventPublisher);
-		listener.setDiagramExporter(diagramExporter);
+		listener.setScheduledExecutorService(scheduledExecutorService);
 
 		attachments = new ArrayList<Attachment>();
 		when(createEvent.getAttachments()).thenReturn(attachments);
@@ -87,7 +88,7 @@ public class AttachmentListenerTest {
 	@Test
 	public void createWithNoAttachments() {
 		listener.attachmentCreateEvent(createEvent);
-		verify(diagramExporter,never()).export(any(Attachment.class));
+		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));
 	}
 	
 	@Test
@@ -95,7 +96,7 @@ public class AttachmentListenerTest {
 		when(attachmentTextFile.isNew()).thenReturn(true);
 		attachments.add(attachmentTextFile);
 		listener.attachmentCreateEvent(createEvent);
-		verify(diagramExporter,never()).export(any(Attachment.class));		
+		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));	
 	}
 	
 	@Test
@@ -103,7 +104,7 @@ public class AttachmentListenerTest {
 		when(attachmentNoExtensionFile.isNew()).thenReturn(true);
 		attachments.add(attachmentNoExtensionFile);
 		listener.attachmentCreateEvent(createEvent);
-		verify(diagramExporter,never()).export(any(Attachment.class));		
+		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));
 	}
 
 	@Test
@@ -111,7 +112,7 @@ public class AttachmentListenerTest {
 		when(attachmentAstahFile.isNew()).thenReturn(true);
 		attachments.add(attachmentAstahFile);
 		listener.attachmentCreateEvent(createEvent);
-		verify(diagramExporter).export(any(Attachment.class));		
+		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));		
 	}
 	
 	@Test
@@ -119,7 +120,7 @@ public class AttachmentListenerTest {
 		when(attachmentJudeFile.isNew()).thenReturn(true);
 		attachments.add(attachmentJudeFile);
 		listener.attachmentCreateEvent(createEvent);
-		verify(diagramExporter).export(any(Attachment.class));		
+		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));	
 	}
 	
 	@Test
@@ -127,42 +128,42 @@ public class AttachmentListenerTest {
 		when(attachmentJuthFile.isNew()).thenReturn(true);
 		attachments.add(attachmentJuthFile);
 		listener.attachmentCreateEvent(createEvent);
-		verify(diagramExporter).export(any(Attachment.class));		
+		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
 	}
 	
 	@Test
 	public void updateAttachmentWithTextFile() throws Exception {
 		attachments.add(attachmentTextFile);
 		listener.attachmentUpdateEvent(updateEvent);
-		verify(diagramExporter,never()).export(any(Attachment.class));		
+		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));		
 	}
 	
 	@Test
 	public void updateAttachmentWithNoExtensionFile() throws Exception {
 		attachments.add(attachmentNoExtensionFile);
 		listener.attachmentUpdateEvent(updateEvent);
-		verify(diagramExporter,never()).export(any(Attachment.class));		
+		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));
 	}
 	
 	@Test
 	public void updateAttachmentWithAstahFile() throws Exception {
 		attachments.add(attachmentAstahFile);
 		listener.attachmentUpdateEvent(updateEvent);
-		verify(diagramExporter).export(any(Attachment.class));		
+		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
 	}
 
 	@Test
 	public void updateAttachmentWithJudeFile() throws Exception {
 		attachments.add(attachmentJudeFile);
 		listener.attachmentUpdateEvent(updateEvent);
-		verify(diagramExporter).export(any(Attachment.class));		
+		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
 	}
 
 	@Test
 	public void updateAttachmentWithJuthFile() throws Exception {
 		attachments.add(attachmentJuthFile);
 		listener.attachmentUpdateEvent(updateEvent);
-		verify(diagramExporter).export(any(Attachment.class));		
+		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
 	}
 
 }
