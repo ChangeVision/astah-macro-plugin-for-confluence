@@ -3,7 +3,7 @@
 	<classpathentry including="**/*.java" kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry including="**/*.java" kind="src" path="src/main/java"/>
 	<classpathentry excluding="**/*.java" kind="src" path="src/main/resources"/>
-	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.0.2/activation-1.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1.jar" sourcepath="M2_REPO/javax/xml/bind/jaxb-api/2.1/jaxb-api-2.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/ws/rs/jsr311-api/1.0/jsr311-api-1.0.jar" sourcepath="M2_REPO/javax/ws/rs/jsr311-api/1.0/jsr311-api-1.0-sources.jar">
@@ -463,7 +463,6 @@
 	<classpathentry kind="var" path="M2_REPO/net/sourceforge/htmlunit/htmlunit/2.5/htmlunit-2.5.jar" sourcepath="M2_REPO/net/sourceforge/htmlunit/htmlunit/2.5/htmlunit-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/net/sourceforge/htmlunit/htmlunit-core-js/2.5/htmlunit-core-js-2.5.jar" sourcepath="M2_REPO/net/sourceforge/htmlunit/htmlunit-core-js/2.5/htmlunit-core-js-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/ibm/icu/icu4j/3.8/icu4j-3.8.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-asl/0.9.4/jackson-asl-0.9.4.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-asl/0.9.4/jackson-asl-0.9.4-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.1/jackson-core-asl-1.9.1.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.1/jackson-core-asl-1.9.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.9.1/jackson-mapper-asl-1.9.1.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.9.1/jackson-mapper-asl-1.9.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/sun/jai_codec/1.1.3/jai_codec-1.1.3.jar"/>

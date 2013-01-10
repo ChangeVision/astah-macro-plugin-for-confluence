@@ -1,42 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.change_vision.astah</groupId>
-    <artifactId>astah-confluence-macro</artifactId>
-    <version>1.1.4-SNAPSHOT</version>
-    <organization>
-        <name>Change Vision inc,</name>
-        <url>http://astah.net/</url>
-    </organization>
-    <name>astah-macro</name>
-    <description>This is the astah-macro plugin for Atlassian Confluence.</description>
-    <packaging>atlassian-plugin</packaging>
-    <scm>
-        <connection>scm:git:ssh://git@bitbucket.org/kompiro/astah-macro-plugin-for-confluence.git</connection>
-        <developerConnection>scm:git:ssh://git@bitbucket.org/kompiro/astah-macro-plugin-for-confluence.git</developerConnection>
-        <tag>HEAD</tag>
-        <url>https://bitbucket.org/kompiro/astah-macro-plugin-for-confluence</url>
-    </scm>
-    <distributionManagement>
-        <repository>
-            <id>atlassian-contrib</id>
-            <name>Atlassian Contrib Repository</name>
-            <url>dav:https://maven.atlassian.com/contrib</url>
-        </repository>
-        <snapshotRepository>
-            <id>atlassian-contrib-snapshot</id>
-            <name>Atlassian Contrib Snapshot Repository</name>
-            <url>dav:https://maven.atlassian.com/contrib-snapshot</url>
-        </snapshotRepository>
-    </distributionManagement>
-    <dependencies>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.1</version>
-            <scope>compile</scope>
-        </dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.change_vision.astah</groupId>
+	<artifactId>astah-confluence-macro</artifactId>
+	<version>1.1.4-SNAPSHOT</version>
+	<organization>
+		<name>Change Vision inc,</name>
+		<url>http://astah.net/</url>
+	</organization>
+	<name>astah-macro</name>
+	<description>This is the astah-macro plugin for Atlassian Confluence.</description>
+	<packaging>atlassian-plugin</packaging>
+	<scm>
+		<connection>scm:git:ssh://git@bitbucket.org/kompiro/astah-macro-plugin-for-confluence.git</connection>
+		<developerConnection>scm:git:ssh://git@bitbucket.org/kompiro/astah-macro-plugin-for-confluence.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://bitbucket.org/kompiro/astah-macro-plugin-for-confluence</url>
+	</scm>
+	<distributionManagement>
+		<repository>
+			<id>atlassian-contrib</id>
+			<name>Atlassian Contrib Repository</name>
+			<url>dav:https://maven.atlassian.com/contrib</url>
+		</repository>
+		<snapshotRepository>
+			<id>atlassian-contrib-snapshot</id>
+			<name>Atlassian Contrib Snapshot Repository</name>
+			<url>dav:https://maven.atlassian.com/contrib-snapshot</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.1</version>
+			<scope>compile</scope>
+		</dependency>
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
@@ -74,18 +75,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.atlassian.plugins.rest</groupId>
-            <artifactId>atlassian-rest-common</artifactId>
-            <version>1.0.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.3</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+     <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
@@ -114,6 +109,18 @@
             <artifactId>nekohtml</artifactId>
             <version>1.9.12</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+	        <groupId>com.atlassian.plugins.rest</groupId>
+        	<artifactId>atlassian-rest-common</artifactId>
+            <version>1.0.2</version>
+            <scope>provided</scope>
+               <exclusions>
+            	<exclusion>
+            		<artifactId>jackson-asl</artifactId>
+            		<groupId>org.codehaus.jackson</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
