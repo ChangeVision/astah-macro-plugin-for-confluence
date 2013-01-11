@@ -20,7 +20,6 @@ public class DiagramsMacro implements Macro {
         this.attachmentManager = attachmentManager;
     }
 
-
 	@Override
 	public String execute(Map<String, String> params, String bodyContent,
 			ConversionContext conversionContext) throws MacroExecutionException {
