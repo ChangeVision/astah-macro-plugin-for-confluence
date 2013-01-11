@@ -22,6 +22,7 @@ function changeDiagram(contextPath, id, attachmentId, attachmentVersion, index) 
 }
 
 function init_viewer(contextPath, id, attachmentId, attachmentVersion){
+  AJS.log("init_viewer - contextPath: '" + contextPath + "' id: '" + id + "' attachmentId: '" + attachmentId + "' attachmentVersion: '" + attachmentVersion + "'");
   AJS.$("#" + id + "_prev").click(function() {
     changeDiagram(contextPath, id, attachmentId, attachmentVersion, viewers[id].diagramIndex - 1);
   });
@@ -38,6 +39,6 @@ function getDiagrams(contextPath, id, attachmentId, attachmentVersion){
       changeDiagram(contextPath, id, attachmentId, attachmentVersion, viewers[id].diagramIndex);
     }
   ).error(function(){
-      setTimeout("getDiagrams('"+id+"',"+attachmentId+","+attachmentVersion+")",5000);
+      setTimeout("getDiagrams('" + contextPath + "','" + id + "'," + attachmentId + "," + attachmentVersion + ")",5000);
   });
 }
