@@ -21,7 +21,7 @@ public class DiagramExportRunnable implements Runnable {
 
 	private static final Logger logger = LoggerFactory.getLogger(DiagramExportRunnable.class);
 	
-	private File tmpRoot = new File(System.getProperty("java.io.tmpdir"));
+	private File tmpRoot = new File(System.getProperty("java.io.tmpdir"),"astah-temp");
 
 	private final String ASTAH_BASE;
 
@@ -210,7 +210,9 @@ public class DiagramExportRunnable implements Runnable {
 	private File storeToTempDir(Attachment attachment){
 		try {
 			long id = attachment.getId();
-			File tmpDir = new File(tmpRoot,String.valueOf(id));
+			Integer attachmentVersion = attachment.getAttachmentVersion();
+			File tmpAttachmentRootDir = new File(tmpRoot,String.valueOf(id));
+			File tmpDir = new File(tmpAttachmentRootDir, String.valueOf(attachmentVersion));
 			tmpDir.mkdirs();
 			File tmpFile = new File(tmpDir,attachment.getFileName());
 			InputStream inputStream = attachment.getContentsAsStream();
@@ -218,6 +220,8 @@ public class DiagramExportRunnable implements Runnable {
 			IOUtils.copy(inputStream, outputStream);
 			IOUtils.closeQuietly(outputStream);
 			tmpFile.deleteOnExit();
+			tmpDir.deleteOnExit();
+			tmpAttachmentRootDir.deleteOnExit();
 			return tmpFile;
 		} catch (IOException e) {
 			logger.error(e.getLocalizedMessage(),e);

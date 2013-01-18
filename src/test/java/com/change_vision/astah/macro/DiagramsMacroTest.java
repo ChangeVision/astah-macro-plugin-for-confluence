@@ -42,7 +42,6 @@ public class DiagramsMacroTest {
 		InputStream stream = DiagramsMacroTest.class.getResourceAsStream("Sample.asta");
 		when(attachmentAstahFile.getContentsAsStream()).thenReturn(stream );
 		
-		
 	}
 
 	@Test

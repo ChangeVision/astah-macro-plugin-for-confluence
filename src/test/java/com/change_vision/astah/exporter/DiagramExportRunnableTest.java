@@ -27,7 +27,10 @@ public class DiagramExportRunnableTest {
 	
 	@Mock
 	private Attachment attachment;
-	
+
+	@Mock
+	private Attachment noDiagramsAttachment;
+
 	@Mock
 	private Attachment errorAttachment;
 	
@@ -50,14 +53,17 @@ public class DiagramExportRunnableTest {
 		InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("Sample.asta");
 		when(attachment.getContentsAsStream()).thenReturn(stream );
 
+		when(noDiagramsAttachment.getId()).thenReturn(random.nextLong());
+		when(noDiagramsAttachment.getVersion()).thenReturn(1);
+		when(noDiagramsAttachment.getFileName()).thenReturn("test.asta");
+		stream = DiagramExportRunnableTest.class.getResourceAsStream("dependency.asta");
+		when(noDiagramsAttachment.getContentsAsStream()).thenReturn(stream );
+
 		when(errorAttachment.getId()).thenReturn(random.nextLong());
 		when(errorAttachment.getVersion()).thenReturn(1);
 		when(errorAttachment.getFileName()).thenReturn("test.asta");
 		stream = DiagramExportRunnableTest.class.getResourceAsStream("test.txt");
 		when(errorAttachment.getContentsAsStream()).thenReturn(stream );
-
-		runnable = new DiagramExportRunnable(attachment, ASTAH_BASE, OUTPUT_BASE);
-		runnable.setTmpRoot(folder.getRoot());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
@@ -67,8 +73,18 @@ public class DiagramExportRunnableTest {
 	
 	@Test
 	public void export() throws Exception {
+		runnable = new DiagramExportRunnable(attachment, ASTAH_BASE, OUTPUT_BASE);
+		runnable.setTmpRoot(folder.getRoot());
 		runnable.run();
 		assertThat(runnable.success,is(true));
+	}
+	
+	@Test
+	public void exportWithNoDiagrams() throws Exception {
+		runnable = new DiagramExportRunnable(noDiagramsAttachment, ASTAH_BASE, OUTPUT_BASE);
+		runnable.setTmpRoot(folder.getRoot());
+		runnable.run();
+		assertThat(runnable.success,is(false));
 	}
 
 	@Test
