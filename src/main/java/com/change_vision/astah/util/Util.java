@@ -7,12 +7,19 @@ import org.apache.commons.lang.SystemUtils;
 public class Util {
 	
 	private static final String SPRIT_CHAR;
+	private static final String JAVA_COMMAND_NAME;
 	static{
 		if(SystemUtils.IS_OS_WINDOWS){
 			SPRIT_CHAR = "\\\\";
+			JAVA_COMMAND_NAME = "javaw.exe";
 		}else{
-			SPRIT_CHAR = File.separator;			
+			SPRIT_CHAR = File.separator;
+			JAVA_COMMAND_NAME = "javaw";
 		}
+	}
+	
+	public String getJavaCommandName(){
+		return JAVA_COMMAND_NAME;
 	}
 
 	public String getFileExtension(File file){

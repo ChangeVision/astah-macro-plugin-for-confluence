@@ -52,7 +52,7 @@ public class DiagramExportRunnable implements Runnable {
 		File javaCommand = getJavaCommand();
 		if(!javaCommand.exists()){
 			logger.error("Can't find java command. '" + javaCommand.getAbsolutePath() + "'");
-			return;			
+			return;
 		}
 
 		String outputRoot = getOutputRoot();
@@ -83,7 +83,7 @@ public class DiagramExportRunnable implements Runnable {
 
 	private void createDiagramIndexFile(final File output) {
 		List<File> pngFiles = new ArrayList<File>();
-		traverseFiles(output,pngFiles);		
+		traverseFiles(output,pngFiles);
 		exportFileIndexFile(output, pngFiles);
 		exportDiagarmIndexFile(output, pngFiles);
 	}
@@ -154,7 +154,8 @@ public class DiagramExportRunnable implements Runnable {
 	private File getJavaCommand() {
 		File javaHome = new File(System.getProperty("java.home"));
 		File javaBin = new File(javaHome,"bin");
-		File javaCommand = new File(javaBin,"java");
+		String javaCommandName = util.getJavaCommandName();
+		File javaCommand = new File(javaBin, javaCommandName);
 		return javaCommand;
 	}
 
