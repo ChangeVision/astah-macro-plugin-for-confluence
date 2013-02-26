@@ -14,7 +14,7 @@ public class Util {
 			JAVA_COMMAND_NAME = "javaw.exe";
 		}else{
 			SPRIT_CHAR = File.separator;
-			JAVA_COMMAND_NAME = "javaw";
+			JAVA_COMMAND_NAME = "java";
 		}
 	}
 	
