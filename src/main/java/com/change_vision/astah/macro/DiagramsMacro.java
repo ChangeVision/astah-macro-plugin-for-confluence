@@ -14,34 +14,34 @@ import com.atlassian.confluence.util.velocity.VelocityUtils;
 
 public class DiagramsMacro implements Macro {
 
-	private final AttachmentManager attachmentManager;
-    
+    private final AttachmentManager attachmentManager;
+
     public DiagramsMacro(AttachmentManager attachmentManager) {
         this.attachmentManager = attachmentManager;
     }
 
-	@Override
-	public String execute(Map<String, String> params, String bodyContent,
-			ConversionContext conversionContext) throws MacroExecutionException {
-		ContentEntityObject entity = conversionContext.getEntity();
-		String attachmentTitle = params.get("name");
-		Attachment targetAttachment = attachmentManager.getAttachment(entity, attachmentTitle);
-		Map<String, Object> context = MacroUtils.defaultVelocityContext();
-		UUID uid =  UUID.randomUUID();
-		context.put("id", uid.toString());
-		context.put("attachmentId", targetAttachment.getId());
-		context.put("attachmentVersion", targetAttachment.getAttachmentVersion());
-		return VelocityUtils.getRenderedTemplate("vm/viewer.vm", context);
-	}
+    @Override
+    public String execute(Map<String, String> params, String bodyContent,
+            ConversionContext conversionContext) throws MacroExecutionException {
+        ContentEntityObject entity = conversionContext.getEntity();
+        String attachmentTitle = params.get("name");
+        Attachment targetAttachment = attachmentManager.getAttachment(entity, attachmentTitle);
+        Map<String, Object> context = MacroUtils.defaultVelocityContext();
+        UUID uid = UUID.randomUUID();
+        context.put("id", uid.toString());
+        context.put("attachmentId", targetAttachment.getId());
+        context.put("attachmentVersion", targetAttachment.getAttachmentVersion());
+        return VelocityUtils.getRenderedTemplate("vm/viewer.vm", context);
+    }
 
-	@Override
-	public BodyType getBodyType() {
-		return BodyType.NONE;
-	}
+    @Override
+    public BodyType getBodyType() {
+        return BodyType.NONE;
+    }
 
-	@Override
-	public OutputType getOutputType() {
-		return OutputType.BLOCK;
-	}
+    @Override
+    public OutputType getOutputType() {
+        return OutputType.BLOCK;
+    }
 
 }

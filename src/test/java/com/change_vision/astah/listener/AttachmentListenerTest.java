@@ -22,148 +22,147 @@ import com.change_vision.astah.exporter.DiagramExportRunnable;
 
 public class AttachmentListenerTest {
 
-	@Mock
-	private BootstrapManager bootstrapManager;
+    @Mock
+    private BootstrapManager bootstrapManager;
 
-	@Mock
-	private EventPublisher eventPublisher;
-	
-	@Mock
-	private AttachmentCreateEvent createEvent;
-	
-	@Mock
-	private AttachmentUpdateEvent updateEvent;
-	
-	@Mock
-	private Attachment attachmentTextFile;
-	
-	@Mock
-	private Attachment attachmentAstahFile;
-	
-	@Mock
-	private Attachment attachmentJudeFile;
-	
-	@Mock
-	private Attachment attachmentJuthFile;
-	
-	@Mock
-	private ScheduledExecutorService scheduledExecutorService;
+    @Mock
+    private EventPublisher eventPublisher;
 
-	@Mock
-	private Attachment attachmentNoExtensionFile;
+    @Mock
+    private AttachmentCreateEvent createEvent;
 
-	private AttachmentListener listener;
+    @Mock
+    private AttachmentUpdateEvent updateEvent;
 
-	private ArrayList<Attachment> attachments;
+    @Mock
+    private Attachment attachmentTextFile;
 
-	
-	@Before
-	public void before() throws Exception {
-		MockitoAnnotations.initMocks(this);
-		
-		listener = new AttachmentListener(bootstrapManager , eventPublisher);
-		listener.setScheduledExecutorService(scheduledExecutorService);
+    @Mock
+    private Attachment attachmentAstahFile;
 
-		attachments = new ArrayList<Attachment>();
-		when(createEvent.getAttachments()).thenReturn(attachments);
-		when(updateEvent.getAttachments()).thenReturn(attachments); // using same attachments
+    @Mock
+    private Attachment attachmentJudeFile;
 
-		when(attachmentTextFile.getFileExtension()).thenReturn("txt");
-		when(attachmentTextFile.getFileName()).thenReturn("test.txt");
+    @Mock
+    private Attachment attachmentJuthFile;
 
-		when(attachmentAstahFile.getFileExtension()).thenReturn("asta");
-		when(attachmentAstahFile.getFileName()).thenReturn("test.asta");
+    @Mock
+    private ScheduledExecutorService scheduledExecutorService;
 
-		when(attachmentJudeFile.getFileExtension()).thenReturn("jude");
-		when(attachmentJudeFile.getFileName()).thenReturn("test.jude");
+    @Mock
+    private Attachment attachmentNoExtensionFile;
 
-		when(attachmentJuthFile.getFileExtension()).thenReturn("juth");
-		when(attachmentJuthFile.getFileName()).thenReturn("test.juth");
+    private AttachmentListener listener;
 
-		when(attachmentNoExtensionFile.getFileExtension()).thenReturn("");
-		when(attachmentNoExtensionFile.getFileName()).thenReturn("test");
+    private ArrayList<Attachment> attachments;
 
-	}
-	
-	@Test
-	public void createWithNoAttachments() {
-		listener.attachmentCreateEvent(createEvent);
-		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));
-	}
-	
-	@Test
-	public void createAttachmentWithTextFile() throws Exception {
-		when(attachmentTextFile.isNew()).thenReturn(true);
-		attachments.add(attachmentTextFile);
-		listener.attachmentCreateEvent(createEvent);
-		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));	
-	}
-	
-	@Test
-	public void createAttachmentWithNoExtensionFile() throws Exception {
-		when(attachmentNoExtensionFile.isNew()).thenReturn(true);
-		attachments.add(attachmentNoExtensionFile);
-		listener.attachmentCreateEvent(createEvent);
-		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));
-	}
+    @Before
+    public void before() throws Exception {
+        MockitoAnnotations.initMocks(this);
 
-	@Test
-	public void createAttachmentWithAstahFile() throws Exception {
-		when(attachmentAstahFile.isNew()).thenReturn(true);
-		attachments.add(attachmentAstahFile);
-		listener.attachmentCreateEvent(createEvent);
-		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));		
-	}
-	
-	@Test
-	public void createAttachmentWithJudeFile() throws Exception {
-		when(attachmentJudeFile.isNew()).thenReturn(true);
-		attachments.add(attachmentJudeFile);
-		listener.attachmentCreateEvent(createEvent);
-		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));	
-	}
-	
-	@Test
-	public void createAttachmentWithJuthFile() throws Exception {
-		when(attachmentJuthFile.isNew()).thenReturn(true);
-		attachments.add(attachmentJuthFile);
-		listener.attachmentCreateEvent(createEvent);
-		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
-	}
-	
-	@Test
-	public void updateAttachmentWithTextFile() throws Exception {
-		attachments.add(attachmentTextFile);
-		listener.attachmentUpdateEvent(updateEvent);
-		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));		
-	}
-	
-	@Test
-	public void updateAttachmentWithNoExtensionFile() throws Exception {
-		attachments.add(attachmentNoExtensionFile);
-		listener.attachmentUpdateEvent(updateEvent);
-		verify(scheduledExecutorService,never()).execute(any(DiagramExportRunnable.class));
-	}
-	
-	@Test
-	public void updateAttachmentWithAstahFile() throws Exception {
-		attachments.add(attachmentAstahFile);
-		listener.attachmentUpdateEvent(updateEvent);
-		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
-	}
+        listener = new AttachmentListener(bootstrapManager, eventPublisher);
+        listener.setScheduledExecutorService(scheduledExecutorService);
 
-	@Test
-	public void updateAttachmentWithJudeFile() throws Exception {
-		attachments.add(attachmentJudeFile);
-		listener.attachmentUpdateEvent(updateEvent);
-		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
-	}
+        attachments = new ArrayList<Attachment>();
+        when(createEvent.getAttachments()).thenReturn(attachments);
+        when(updateEvent.getAttachments()).thenReturn(attachments); // using same attachments
 
-	@Test
-	public void updateAttachmentWithJuthFile() throws Exception {
-		attachments.add(attachmentJuthFile);
-		listener.attachmentUpdateEvent(updateEvent);
-		verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
-	}
+        when(attachmentTextFile.getFileExtension()).thenReturn("txt");
+        when(attachmentTextFile.getFileName()).thenReturn("test.txt");
+
+        when(attachmentAstahFile.getFileExtension()).thenReturn("asta");
+        when(attachmentAstahFile.getFileName()).thenReturn("test.asta");
+
+        when(attachmentJudeFile.getFileExtension()).thenReturn("jude");
+        when(attachmentJudeFile.getFileName()).thenReturn("test.jude");
+
+        when(attachmentJuthFile.getFileExtension()).thenReturn("juth");
+        when(attachmentJuthFile.getFileName()).thenReturn("test.juth");
+
+        when(attachmentNoExtensionFile.getFileExtension()).thenReturn("");
+        when(attachmentNoExtensionFile.getFileName()).thenReturn("test");
+
+    }
+
+    @Test
+    public void createWithNoAttachments() {
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService, never()).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void createAttachmentWithTextFile() throws Exception {
+        when(attachmentTextFile.isNew()).thenReturn(true);
+        attachments.add(attachmentTextFile);
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService, never()).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void createAttachmentWithNoExtensionFile() throws Exception {
+        when(attachmentNoExtensionFile.isNew()).thenReturn(true);
+        attachments.add(attachmentNoExtensionFile);
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService, never()).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void createAttachmentWithAstahFile() throws Exception {
+        when(attachmentAstahFile.isNew()).thenReturn(true);
+        attachments.add(attachmentAstahFile);
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void createAttachmentWithJudeFile() throws Exception {
+        when(attachmentJudeFile.isNew()).thenReturn(true);
+        attachments.add(attachmentJudeFile);
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void createAttachmentWithJuthFile() throws Exception {
+        when(attachmentJuthFile.isNew()).thenReturn(true);
+        attachments.add(attachmentJuthFile);
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void updateAttachmentWithTextFile() throws Exception {
+        attachments.add(attachmentTextFile);
+        listener.attachmentUpdateEvent(updateEvent);
+        verify(scheduledExecutorService, never()).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void updateAttachmentWithNoExtensionFile() throws Exception {
+        attachments.add(attachmentNoExtensionFile);
+        listener.attachmentUpdateEvent(updateEvent);
+        verify(scheduledExecutorService, never()).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void updateAttachmentWithAstahFile() throws Exception {
+        attachments.add(attachmentAstahFile);
+        listener.attachmentUpdateEvent(updateEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void updateAttachmentWithJudeFile() throws Exception {
+        attachments.add(attachmentJudeFile);
+        listener.attachmentUpdateEvent(updateEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void updateAttachmentWithJuthFile() throws Exception {
+        attachments.add(attachmentJuthFile);
+        listener.attachmentUpdateEvent(updateEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
 
 }

@@ -21,44 +21,43 @@ import com.sun.jersey.api.NotFoundException;
 @Path("/attachment")
 public class ExportedFileResource {
 
-	private final String OUTPUT_BASE;
-	private final ObjectMapper mapper = new ObjectMapper(); 
-	
-	public ExportedFileResource(BootstrapManager bootstrapManager){
-		OUTPUT_BASE = bootstrapManager.getConfluenceHome() + File.separator +  "astah-exported";
-	}
-	
+    private final String OUTPUT_BASE;
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    public ExportedFileResource(BootstrapManager bootstrapManager) {
+        OUTPUT_BASE = bootstrapManager.getConfluenceHome() + File.separator + "astah-exported";
+    }
+
     @GET
-    @Produces({"application/json; charset=utf-8"})
+    @Produces({ "application/json; charset=utf-8" })
     @Path("/diagrams/{attachmentId}/{attachmentVersion}")
-    public String getDiagrams(
-    		@PathParam("attachmentId") Long attachmentId,
-    		@PathParam("attachmentVersion") Long attachmentVersion){
-        File idDir = new File(OUTPUT_BASE,attachmentId.toString());
-		File versionDir = new File(idDir,attachmentVersion.toString());
-		File file = new File(versionDir,"diagram.json");
-		try {
-			return FileUtils.readFileToString(file,"utf-8");
-		} catch (IOException e) {
-			String message = String.format("No such attachment. id:'%d' version:'%d'",attachmentId,attachmentVersion);
-			throw new NotFoundException(message);
-		}
+    public String getDiagrams(@PathParam("attachmentId") Long attachmentId,
+            @PathParam("attachmentVersion") Long attachmentVersion) {
+        File idDir = new File(OUTPUT_BASE, attachmentId.toString());
+        File versionDir = new File(idDir, attachmentVersion.toString());
+        File file = new File(versionDir, "diagram.json");
+        try {
+            return FileUtils.readFileToString(file, "utf-8");
+        } catch (IOException e) {
+            String message = String.format("No such attachment. id:'%d' version:'%d'",
+                    attachmentId, attachmentVersion);
+            throw new NotFoundException(message);
+        }
     }
-    
+
     @GET
-    @Produces({"image/png"})
+    @Produces({ "image/png" })
     @Path("/image/{attachmentId}/{attachmentVersion}/{index}.png")
-    public File getExportedFileImage(
-    		@PathParam("attachmentId") Long attachmentId,
-    		@PathParam("attachmentVersion") Long attachmentVersion,
-    		@PathParam("index") Integer index) throws JsonParseException, IOException{
-        File idDir = new File(OUTPUT_BASE,attachmentId.toString());
-		File versionDir = new File(idDir,attachmentVersion.toString());
-		File indexFile = new File(versionDir,"file.json");
-		String[] filePaths = mapper.readValue(indexFile, String[].class);
-		String filePath = filePaths[index];
-		File file = new File(OUTPUT_BASE,filePath);
-       return file;
+    public File getExportedFileImage(@PathParam("attachmentId") Long attachmentId,
+            @PathParam("attachmentVersion") Long attachmentVersion,
+            @PathParam("index") Integer index) throws JsonParseException, IOException {
+        File idDir = new File(OUTPUT_BASE, attachmentId.toString());
+        File versionDir = new File(idDir, attachmentVersion.toString());
+        File indexFile = new File(versionDir, "file.json");
+        String[] filePaths = mapper.readValue(indexFile, String[].class);
+        String filePath = filePaths[index];
+        File file = new File(OUTPUT_BASE, filePath);
+        return file;
     }
- 
+
 }

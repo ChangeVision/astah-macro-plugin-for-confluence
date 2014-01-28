@@ -8,11 +8,9 @@ import junit.framework.Assert;
 import java.io.IOException;
 import java.util.Properties;
 
-public class AbstractIntegrationTestCase extends AbstractConfluencePluginWebTestCase
-{
+public class AbstractIntegrationTestCase extends AbstractConfluencePluginWebTestCase {
     @Override
-    protected JWebUnitConfluenceWebTester createConfluenceWebTester()
-    {
+    protected JWebUnitConfluenceWebTester createConfluenceWebTester() {
         Properties props = new Properties();
         props.put("confluence.webapp.protocol", "http");
         props.put("confluence.webapp.host", "localhost");
@@ -27,12 +25,9 @@ public class AbstractIntegrationTestCase extends AbstractConfluencePluginWebTest
         props.put("confluence.auth.admin.password", "admin");
 
         TesterConfiguration conf;
-        try
-        {
+        try {
             conf = new TesterConfiguration(props);
-        }
-        catch (IOException ioe)
-        {
+        } catch (IOException ioe) {
             Assert.fail("Unable to create tester: " + ioe.getMessage());
             return null;
         }
