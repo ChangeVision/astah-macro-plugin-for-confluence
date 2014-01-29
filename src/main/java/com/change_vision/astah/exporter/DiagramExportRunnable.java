@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class DiagramExportRunnable implements Runnable {
 
     private final Attachment attachment;
 
+    private ExportSetting setting = new ExportSetting();
+
     boolean success = false;
 
     public DiagramExportRunnable(final Attachment attachment, final String astahBase,
@@ -48,7 +51,7 @@ public class DiagramExportRunnable implements Runnable {
     @Override
     public void run() {
         File file = storeToTempDir(attachment);
-        logger.info("file : " + file.getAbsolutePath());
+        logger.info("file : {}", file.getAbsolutePath());
 
         File javaCommand = getJavaCommand();
         if (!javaCommand.exists()) {
@@ -91,15 +94,29 @@ public class DiagramExportRunnable implements Runnable {
     }
 
     private String[] createExportCommand(File file, File javaCommand, String outputRoot) {
-        String[] commands = new String[] { javaCommand.getAbsolutePath(), "-Xms16m", "-Xmx384m",
-                "-Djava.awt.headless=true", "-cp",
-                ASTAH_BASE + File.separator + "astah-community.jar",
-                "com.change_vision.jude.cmdline.JudeCommandRunner", "-image", "all", "-resized",
-                "-f", file.getAbsolutePath(), "-t", "png", "-o", outputRoot };
-        for (String command : commands) {
-            logger.info("args:" + command);
+        URL resource = DiagramExportRunnable.class.getResource("export.ini");
+        File settingFile = new File(resource.getFile());
+        String[] loadedSettings = setting.load(settingFile);
+        List<String> commands = new ArrayList<String>();
+        commands.add(javaCommand.getAbsolutePath());
+        for (String loadedSetting : loadedSettings) {
+            commands.add(loadedSetting);
         }
-        return commands;
+        commands.add("-Djava.awt.headless=true");
+        commands.add("-cp");
+        commands.add(ASTAH_BASE + File.separator + "astah-community.jar");
+        commands.add("com.change_vision.jude.cmdline.JudeCommandRunner");
+        commands.add("-image");
+        commands.add( "all");
+        commands.add("-resized");
+        commands.add("-f");
+        commands.add(file.getAbsolutePath());
+        commands.add("-t");
+        commands.add("png");
+        commands.add("-o");
+        commands.add(outputRoot);
+        logger.info("args: {}", commands);
+        return commands.toArray(new String[0]);
     }
 
     private void startExportProcess(String[] commands) {
@@ -191,7 +208,7 @@ public class DiagramExportRunnable implements Runnable {
 
             String suffix = util.getFileExtension(file);
             if (suffix != null && suffix.equalsIgnoreCase("png")) {
-                logger.info("exported file '" + file.getName() + "'");
+                logger.info("exported file '{}'", file.getName());
                 pngFiles.add(file);
             }
         }
