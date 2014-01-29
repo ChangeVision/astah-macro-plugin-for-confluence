@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,8 +66,8 @@ public class DiagramExportRunnable implements Runnable {
 
         final File output = new File(outputRoot);
         if (!output.exists()) {
-            logger.error("Can't create output directory. May be permission issue.'"
-                    + output.getAbsolutePath() + "'");
+            logger.error("Can't create output directory. May be permission issue.'{}'",
+                    output.getAbsolutePath());
             return;
         }
 
@@ -94,8 +93,7 @@ public class DiagramExportRunnable implements Runnable {
     }
 
     private String[] createExportCommand(File file, File javaCommand, String outputRoot) {
-        URL resource = DiagramExportRunnable.class.getResource("export.ini");
-        File settingFile = new File(resource.getFile());
+        File settingFile = new File(ASTAH_BASE,"export.ini");
         String[] loadedSettings = setting.load(settingFile);
         List<String> commands = new ArrayList<String>();
         commands.add(javaCommand.getAbsolutePath());
@@ -103,6 +101,7 @@ public class DiagramExportRunnable implements Runnable {
             commands.add(loadedSetting);
         }
         commands.add("-Djava.awt.headless=true");
+        commands.add("-Dcheck_jvm_version=false");
         commands.add("-cp");
         commands.add(ASTAH_BASE + File.separator + "astah-community.jar");
         commands.add("com.change_vision.jude.cmdline.JudeCommandRunner");
