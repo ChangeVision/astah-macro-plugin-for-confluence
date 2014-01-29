@@ -36,33 +36,33 @@ public class ExportSettingTest {
 
     @Test
     public void parseWithALine() throws Exception {
-        String[] args = setting.parse("-Xms=16m");
+        String[] args = setting.parse("-Xms16m");
         assertThat(args.length,is(1));
-        assertThat(args[0],is("-Xms=16m"));
+        assertThat(args[0],is("-Xms16m"));
     }
 
     @Test
     public void parseWithLines() throws Exception {
-        String[] args = setting.parse("-Xms=16m\n-Xmx=384m");
+        String[] args = setting.parse("-Xms16m\n-Xmx384m");
         assertThat(args.length,is(2));
-        assertThat(args[0],is("-Xms=16m"));
-        assertThat(args[1],is("-Xmx=384m"));
+        assertThat(args[0],is("-Xms16m"));
+        assertThat(args[1],is("-Xmx384m"));
     }
     
     @Test
     public void parseWithLinesAndEmptyLine() throws Exception {
-        String[] args = setting.parse("-Xms=16m\n\n-Xmx=384m");
+        String[] args = setting.parse("-Xms16m\n\n-Xmx384m");
         assertThat(args.length,is(2));
-        assertThat(args[0],is("-Xms=16m"));
-        assertThat(args[1],is("-Xmx=384m"));
+        assertThat(args[0],is("-Xms16m"));
+        assertThat(args[1],is("-Xmx384m"));
     }
 
     @Test
     public void parseWithLinesAndComment() throws Exception {
-        String[] args = setting.parse("-Xms=16m\n#Heap Size\n-Xmx=384m");
+        String[] args = setting.parse("-Xms16m\n#Heap Size\n-Xmx384m");
         assertThat(args.length,is(2));
-        assertThat(args[0],is("-Xms=16m"));
-        assertThat(args[1],is("-Xmx=384m"));
+        assertThat(args[0],is("-Xms16m"));
+        assertThat(args[1],is("-Xmx384m"));
     }
     
     @Test(expected=IllegalArgumentException.class)
@@ -83,8 +83,8 @@ public class ExportSettingTest {
         File file = new File(resource.getFile());
         String[] args = setting.load(file);
         assertThat(args.length,is(2));
-        assertThat(args[0],is("-Xms=16m"));
-        assertThat(args[1],is("-Xmx=384m"));
+        assertThat(args[0],is("-Xms16m"));
+        assertThat(args[1],is("-Xmx384m"));
     }
 
 }
