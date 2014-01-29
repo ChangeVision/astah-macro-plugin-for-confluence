@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,12 +30,20 @@ public class PluginListener implements DisposableBean {
         this.eventPublisher = eventPublisher;
         eventPublisher.register(this);
         ASTAH_BASE = bootstrapManager.getConfluenceHome() + File.separator + "astah";
-        File base = new File(ASTAH_BASE);
-        base.mkdir();
     }
 
     @EventListener
     public void pluginInstallEvent(PluginInstallEvent event) {
+        File base = new File(ASTAH_BASE);
+        if (base.exists()) {
+            try {
+                FileUtils.deleteDirectory(base);
+            } catch (IOException e) {
+                log.error("error has occured when unzipping", e);
+                e.printStackTrace();
+            }
+        }
+        base.mkdir();
         ClassLoader classLoader = this.getClass().getClassLoader();
         URL resource = classLoader.getResource("astah.zip");
         if (resource != null) {
@@ -45,12 +54,12 @@ public class PluginListener implements DisposableBean {
                 ZipEntry ze = null;
                 while ((ze = zin.getNextEntry()) != null) {
                     File target = new File(ASTAH_BASE, ze.getName());
-                    log.info("Unzip:" + target);
+                    log.info("Unzip: {}", target);
                     if (ze.isDirectory()) {
                         target.mkdir();
                     } else {
                         String path = target.getAbsolutePath();
-                        log.info("path:" + path);
+                        log.info("path: {}", path);
                         FileOutputStream fout = new FileOutputStream(path);
                         IOUtils.copy(zin, fout);
                         zin.closeEntry();
