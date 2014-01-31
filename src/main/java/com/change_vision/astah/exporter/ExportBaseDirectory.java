@@ -1,0 +1,19 @@
+package com.change_vision.astah.exporter;
+
+import java.io.File;
+
+import com.atlassian.confluence.setup.BootstrapManager;
+
+public class ExportBaseDirectory {
+    
+    private final File exportBase;
+    
+    public ExportBaseDirectory(BootstrapManager bootstrapManager){
+        exportBase = new File(bootstrapManager.getConfluenceHome(), "astah-exported");
+    }
+    
+    public File getDirectory(){
+        return exportBase;
+    }
+
+}

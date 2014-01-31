@@ -23,9 +23,9 @@ public class DiagramExportRunnable implements Runnable {
 
     private File tmpRoot = new File(System.getProperty("java.io.tmpdir"), "astah-temp");
 
-    private final String ASTAH_BASE;
-
-    private final String OUTPUT_BASE;
+    private final AstahBaseDirectory astahBase;
+    
+    private ExportBaseDirectory exportBase;
 
     private final Util util = new Util();
 
@@ -37,24 +37,29 @@ public class DiagramExportRunnable implements Runnable {
 
     boolean success = false;
 
-    public DiagramExportRunnable(final Attachment attachment, final String astahBase,
-            final String outputBase) {
+    public DiagramExportRunnable(final Attachment attachment, final AstahBaseDirectory astahBase,
+            final ExportBaseDirectory exportBase) {
         if (attachment == null) {
             throw new IllegalArgumentException("attachment is null.");
         }
         this.attachment = attachment;
-        this.ASTAH_BASE = astahBase;
-        this.OUTPUT_BASE = outputBase;
+        this.astahBase = astahBase;
+        this.exportBase = exportBase;
     }
 
     @Override
     public void run() {
+        if (astahBase.isValid() == false) {
+            logger.error("Illegal state of exporting astah diagrams environment.");
+            return;
+        }
+        
         File file = storeToTempDir(attachment);
         logger.info("file : {}", file.getAbsolutePath());
 
         File javaCommand = getJavaCommand();
         if (!javaCommand.exists()) {
-            logger.error("Can't find java command. '" + javaCommand.getAbsolutePath() + "'");
+            logger.error("Can't find java command. '{}'",javaCommand.getAbsolutePath());
             return;
         }
 
@@ -93,17 +98,12 @@ public class DiagramExportRunnable implements Runnable {
     }
 
     private String[] createExportCommand(File file, File javaCommand, String outputRoot) {
-        File settingFile = new File(ASTAH_BASE,"export.ini");
-        String[] loadedSettings = setting.load(settingFile);
         List<String> commands = new ArrayList<String>();
-        commands.add(javaCommand.getAbsolutePath());
-        for (String loadedSetting : loadedSettings) {
-            commands.add(loadedSetting);
-        }
+        addSettingFromFile(javaCommand, commands);
         commands.add("-Djava.awt.headless=true");
         commands.add("-Dcheck_jvm_version=false");
         commands.add("-cp");
-        commands.add(ASTAH_BASE + File.separator + "astah-community.jar");
+        commands.add(astahBase.getCommunityJar().getAbsolutePath());
         commands.add("com.change_vision.jude.cmdline.JudeCommandRunner");
         commands.add("-image");
         commands.add( "all");
@@ -116,6 +116,18 @@ public class DiagramExportRunnable implements Runnable {
         commands.add(outputRoot);
         logger.info("args: {}", commands);
         return commands.toArray(new String[0]);
+    }
+
+    private void addSettingFromFile(File javaCommand, List<String> commands) {
+        File settingFile = astahBase.getExportIniFile();
+        if (settingFile == null || settingFile.exists() == false) {
+            return;
+        }
+        String[] loadedSettings = setting.load(settingFile);
+        commands.add(javaCommand.getAbsolutePath());
+        for (String loadedSetting : loadedSettings) {
+            commands.add(loadedSetting);
+        }
     }
 
     private void startExportProcess(String[] commands) {
@@ -164,7 +176,7 @@ public class DiagramExportRunnable implements Runnable {
     }
 
     private String getOutputRoot() {
-        return OUTPUT_BASE + File.separator + String.valueOf(attachment.getId()) + File.separator
+        return exportBase.getDirectory().getAbsolutePath() + File.separator + String.valueOf(attachment.getId()) + File.separator
                 + String.valueOf(attachment.getVersion());
     }
 
@@ -173,7 +185,7 @@ public class DiagramExportRunnable implements Runnable {
             String[] filePaths = new String[pngFiles.size()];
             for (int index = 0; index < pngFiles.size(); index++) {
                 File pngFile = pngFiles.get(index);
-                String relativePath = util.getRelativePath(OUTPUT_BASE, pngFile);
+                String relativePath = util.getRelativePath(exportBase.getDirectory().getAbsolutePath(), pngFile);
                 filePaths[index] = relativePath;
             }
             File file = new File(outputRoot, "file.json");

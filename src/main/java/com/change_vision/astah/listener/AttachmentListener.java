@@ -1,6 +1,5 @@
 package com.change_vision.astah.listener;
 
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -16,7 +15,9 @@ import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
+import com.change_vision.astah.exporter.AstahBaseDirectory;
 import com.change_vision.astah.exporter.DiagramExportRunnable;
+import com.change_vision.astah.exporter.ExportBaseDirectory;
 
 public class AttachmentListener implements DisposableBean {
 
@@ -33,15 +34,15 @@ public class AttachmentListener implements DisposableBean {
     private ScheduledExecutorService scheduledExecutorService = Executors
             .newSingleThreadScheduledExecutor();
 
-    private final String outputBase;
+    private final ExportBaseDirectory exportBase;
 
-    private final String astahBase;
+    private final AstahBaseDirectory astahBase;
 
     public AttachmentListener(BootstrapManager bootstrapManager, EventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
         eventPublisher.register(this);
-        outputBase = bootstrapManager.getConfluenceHome() + File.separator + "astah-exported";
-        astahBase = bootstrapManager.getConfluenceHome() + File.separator + "astah";
+        exportBase = new ExportBaseDirectory(bootstrapManager);
+        astahBase = new AstahBaseDirectory(bootstrapManager);
         logger.info("created attachment listener");
     }
 
@@ -69,7 +70,7 @@ public class AttachmentListener implements DisposableBean {
             if (needsToExport(updateEvent, attachment) && isTargetExtension(extension)) {
                 logger.info("start export : " + attachment.getId());
                 DiagramExportRunnable runnable = new DiagramExportRunnable(attachment, astahBase,
-                        outputBase);
+                        exportBase);
                 scheduledExecutorService.execute(runnable);
                 logger.info("end export : " + attachment.getId());
             }

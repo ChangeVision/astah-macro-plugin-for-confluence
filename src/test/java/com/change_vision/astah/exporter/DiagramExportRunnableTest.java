@@ -18,15 +18,23 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.atlassian.confluence.pages.Attachment;
+import com.atlassian.confluence.setup.BootstrapManager;
 
 public class DiagramExportRunnableTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    private String ASTAH_BASE;
+    private AstahBaseDirectory astahBase;
 
-    private String OUTPUT_BASE;
+    @Mock
+    private AstahBaseDirectory deletedAsathBase;
+
+    @Mock
+    private ExportBaseDirectory exportBase;
+    
+    @Mock
+    private BootstrapManager bootstrapManager;
 
     @Mock
     private Attachment attachment;
@@ -50,46 +58,56 @@ public class DiagramExportRunnableTest {
     public void before() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        ASTAH_BASE = DiagramExportRunnableTest.class.getResource(".").getFile();
-        OUTPUT_BASE = folder.newFolder().getAbsolutePath();
+        String confluenceHome = DiagramExportRunnableTest.class.getResource(".").getFile();
+        when(bootstrapManager.getConfluenceHome()).thenReturn(confluenceHome);
+        astahBase = new AstahBaseDirectory(bootstrapManager);
+
+        when(exportBase.getDirectory()).thenReturn(folder.newFolder());
 
         folder.newFile("test.asta");
         outputFolder = folder.getRoot();
 
+        {
+            when(attachment.getId()).thenReturn(random.nextLong());
+            when(attachment.getVersion()).thenReturn(1);
+            when(attachment.getFileName()).thenReturn("test.asta");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("Sample.asta");
+            when(attachment.getContentsAsStream()).thenReturn(stream);
+        }
 
-        when(attachment.getId()).thenReturn(random.nextLong());
-        when(attachment.getVersion()).thenReturn(1);
-        when(attachment.getFileName()).thenReturn("test.asta");
-        InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("Sample.asta");
-        when(attachment.getContentsAsStream()).thenReturn(stream);
+        {
+            when(attachment6_8.getId()).thenReturn(random.nextLong());
+            when(attachment6_8.getVersion()).thenReturn(1);
+            when(attachment6_8.getFileName()).thenReturn("6_8.asta");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("astah_professional6.8(37)_remove_UseCaseDescription.asta");
+            when(attachment6_8.getContentsAsStream()).thenReturn(stream);
+        }
 
-        when(attachment6_8.getId()).thenReturn(random.nextLong());
-        when(attachment6_8.getVersion()).thenReturn(1);
-        when(attachment6_8.getFileName()).thenReturn("6_8.asta");
-        stream = DiagramExportRunnableTest.class.getResourceAsStream("astah_professional6.8(37)_remove_UseCaseDescription.asta");
-        when(attachment6_8.getContentsAsStream()).thenReturn(stream);
+        {
+            when(noDiagramsAttachment.getId()).thenReturn(random.nextLong());
+            when(noDiagramsAttachment.getVersion()).thenReturn(1);
+            when(noDiagramsAttachment.getFileName()).thenReturn("test.asta");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("dependency.asta");
+            when(noDiagramsAttachment.getContentsAsStream()).thenReturn(stream);
+        }
 
-        when(noDiagramsAttachment.getId()).thenReturn(random.nextLong());
-        when(noDiagramsAttachment.getVersion()).thenReturn(1);
-        when(noDiagramsAttachment.getFileName()).thenReturn("test.asta");
-        stream = DiagramExportRunnableTest.class.getResourceAsStream("dependency.asta");
-        when(noDiagramsAttachment.getContentsAsStream()).thenReturn(stream);
-
-        when(errorAttachment.getId()).thenReturn(random.nextLong());
-        when(errorAttachment.getVersion()).thenReturn(1);
-        when(errorAttachment.getFileName()).thenReturn("test.asta");
-        stream = DiagramExportRunnableTest.class.getResourceAsStream("test.txt");
-        when(errorAttachment.getContentsAsStream()).thenReturn(stream);
+        {
+            when(errorAttachment.getId()).thenReturn(random.nextLong());
+            when(errorAttachment.getVersion()).thenReturn(1);
+            when(errorAttachment.getFileName()).thenReturn("test.asta");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("test.txt");
+            when(errorAttachment.getContentsAsStream()).thenReturn(stream);
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void export_with_null() throws Exception {
-        new DiagramExportRunnable(null, ASTAH_BASE, OUTPUT_BASE);
+        new DiagramExportRunnable(null, astahBase, exportBase);
     }
 
     @Test
     public void export() throws Exception {
-        runnable = new DiagramExportRunnable(attachment, ASTAH_BASE, OUTPUT_BASE);
+        runnable = new DiagramExportRunnable(attachment, astahBase, exportBase);
         runnable.setTmpRoot(outputFolder);
         runnable.run();
         assertThat(runnable.success, is(true));
@@ -99,7 +117,7 @@ public class DiagramExportRunnableTest {
 
     @Test
     public void export6_8() throws Exception {
-        runnable = new DiagramExportRunnable(attachment6_8, ASTAH_BASE, OUTPUT_BASE);
+        runnable = new DiagramExportRunnable(attachment6_8, astahBase, exportBase);
         runnable.setTmpRoot(outputFolder);
         runnable.run();
         assertThat(runnable.success, is(true));
@@ -109,7 +127,7 @@ public class DiagramExportRunnableTest {
 
     @Test
     public void exportWithNoDiagrams() throws Exception {
-        runnable = new DiagramExportRunnable(noDiagramsAttachment, ASTAH_BASE, OUTPUT_BASE);
+        runnable = new DiagramExportRunnable(noDiagramsAttachment, astahBase, exportBase);
         runnable.setTmpRoot(outputFolder);
         runnable.run();
         assertThat(runnable.success, is(false));
@@ -119,7 +137,7 @@ public class DiagramExportRunnableTest {
 
     @Test
     public void exportWhenAstahError() throws Exception {
-        runnable = new DiagramExportRunnable(attachment, "", OUTPUT_BASE);
+        runnable = new DiagramExportRunnable(attachment, deletedAsathBase, exportBase);
         runnable.setTmpRoot(folder.getRoot());
         runnable.run();
         assertThat(runnable.success, is(false));
