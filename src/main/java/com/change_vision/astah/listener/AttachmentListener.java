@@ -43,36 +43,34 @@ public class AttachmentListener implements DisposableBean {
         eventPublisher.register(this);
         exportBase = new ExportBaseDirectory(bootstrapManager);
         astahBase = new AstahBaseDirectory(bootstrapManager);
-        logger.info("created attachment listener");
+        logger.trace("created attachment listener");
     }
 
     @EventListener
     public void attachmentCreateEvent(AttachmentCreateEvent event) {
-        logger.info("attachmentCreateEvent!!");
+        logger.trace("attachmentCreateEvent!!");
         exportDiagramImages(event);
     }
 
     @EventListener
     public void attachmentUpdateEvent(AttachmentUpdateEvent event) {
-        logger.info("attachmentUpdateEvent!!");
+        logger.trace("attachmentUpdateEvent!!");
         exportDiagramImages(event);
     }
 
     private void exportDiagramImages(AttachmentEvent event) {
-        logger.info("attachment event : " + event);
+        logger.trace("attachment event : {}", event);
         boolean updateEvent = (event instanceof AttachmentUpdateEvent);
         List<Attachment> attachments = event.getAttachments();
         for (final Attachment attachment : attachments) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("attachment : " + attachment.getFileName());
-            }
+            logger.info("attachment : {}", attachment.getFileName());
             String extension = attachment.getFileExtension();
             if (needsToExport(updateEvent, attachment) && isTargetExtension(extension)) {
-                logger.info("start export : " + attachment.getId());
+                logger.info("start export : {}", attachment.getId());
                 DiagramExportRunnable runnable = new DiagramExportRunnable(attachment, astahBase,
                         exportBase);
                 scheduledExecutorService.execute(runnable);
-                logger.info("end export : " + attachment.getId());
+                logger.info("end export : {}", attachment.getId());
             }
         }
     }
