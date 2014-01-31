@@ -24,8 +24,6 @@ public class DiagramExportRunnable implements Runnable {
     private File tmpRoot = new File(System.getProperty("java.io.tmpdir"), "astah-temp");
 
     private final AstahBaseDirectory astahBase;
-    
-    private ExportBaseDirectory exportBase;
 
     private final Util util = new Util();
 
@@ -36,6 +34,8 @@ public class DiagramExportRunnable implements Runnable {
     private ExportSetting setting = new ExportSetting();
 
     boolean success = false;
+
+    private ExportBaseDirectory exportBase;
 
     public DiagramExportRunnable(final Attachment attachment, final AstahBaseDirectory astahBase,
             final ExportBaseDirectory exportBase) {
@@ -63,13 +63,13 @@ public class DiagramExportRunnable implements Runnable {
             return;
         }
 
-        String outputRoot = getOutputRoot();
+        ExportRootDirectory exportRootDirectory = createExportRoot();
 
-        String[] commands = createExportCommand(file, javaCommand, outputRoot);
+        String[] commands = createExportCommand(file, javaCommand, exportRootDirectory);
 
         startExportProcess(commands);
 
-        final File output = new File(outputRoot);
+        final File output = exportRootDirectory.getDirectory();
         if (!output.exists()) {
             logger.error("Can't create output directory. May be permission issue.'{}'",
                     output.getAbsolutePath());
@@ -97,7 +97,7 @@ public class DiagramExportRunnable implements Runnable {
         exportDiagarmIndexFile(output, pngFiles);
     }
 
-    private String[] createExportCommand(File file, File javaCommand, String outputRoot) {
+    private String[] createExportCommand(File file, File javaCommand, ExportRootDirectory exportRoot) {
         List<String> commands = new ArrayList<String>();
         addSettingFromFile(javaCommand, commands);
         commands.add("-Djava.awt.headless=true");
@@ -113,7 +113,7 @@ public class DiagramExportRunnable implements Runnable {
         commands.add("-t");
         commands.add("png");
         commands.add("-o");
-        commands.add(outputRoot);
+        commands.add(exportRoot.getDirectory().getAbsolutePath());
         logger.info("args: {}", commands);
         return commands.toArray(new String[0]);
     }
@@ -175,9 +175,8 @@ public class DiagramExportRunnable implements Runnable {
         return javaCommand;
     }
 
-    private String getOutputRoot() {
-        return exportBase.getDirectory().getAbsolutePath() + File.separator + String.valueOf(attachment.getId()) + File.separator
-                + String.valueOf(attachment.getVersion());
+    private ExportRootDirectory createExportRoot() {
+        return new ExportRootDirectory(exportBase, attachment);
     }
 
     private void exportFileIndexFile(File outputRoot, List<File> pngFiles) {
