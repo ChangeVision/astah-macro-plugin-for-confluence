@@ -6,20 +6,22 @@
     </plugin-info>>
 
     <resource key="images" name="images/" type="download" location="images"/>
+    <resource type="i18n" name="i18n" location="astah" />
     <xhtml-macro name="astah"
                  class="com.change_vision.astah.macro.DiagramsMacro"
                  key="astah"
                  icon="/download/resources/com.change_vision.astah.astah-confluence-macro/images/class.png"
                  labeh="Astah Diagrams">
-      <description>Inserts Astah diagrams in the pages</description>
+        <description>Inserts Astah diagrams in the pages</description>
         <category name="development"/>
         <category name="media"/>
         <parameters>
-      <!-- page and name are reserved by AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage -->
-      <parameter name="page" type="confluence-content"/>
+          <!-- page and name are reserved by AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage -->
+          <parameter name="page" type="confluence-content"/>
           <parameter name="name" type="attachment" required="true">
               <alias name=""/>
           </parameter>
+          <parameter name="number" type="string" required="true" default="1"/>
         </parameters>
     </xhtml-macro>
 
@@ -44,10 +46,11 @@
     </web-resource>
 
 
-  <rest key="rest-service-resources" path="/astah" version="1.0">
+    <rest key="rest-service-resources" path="/astah" version="1.0">
         <description>REST resource for the Astah Macro Plugin will be provided.</description>
     </rest>
 
+    <component-import key="writableDownloadResourceManager" interface="com.atlassian.confluence.importexport.resource.WritableDownloadResourceManager"/>
     <component-import key="settingsManager" interface="com.atlassian.confluence.setup.settings.SettingsManager"/>
     <component-import key="bootstrapManager" interface="com.atlassian.confluence.setup.BootstrapManager"/>
     <component name="asta file attachment listener" class="com.change_vision.astah.listener.AttachmentListener" key="attachmentListener"/>

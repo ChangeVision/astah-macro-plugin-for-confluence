@@ -1,6 +1,6 @@
-function previewImage( contextPath, theId, theAttachmentId, theAttachmentVersion){
+function previewImage( contextPath, theId, theAttachmentId, theAttachmentVersion, theIndex){
   AJS.toInit(function() {
-      init_viewer(contextPath, theId,theAttachmentId,theAttachmentVersion);
+      init_viewer(contextPath, theId,theAttachmentId,theAttachmentVersion, theIndex);
       jQuery("#" + theId + "_diagram_image").colorbox({
           href:function(){
               return jQuery(this).attr("src");

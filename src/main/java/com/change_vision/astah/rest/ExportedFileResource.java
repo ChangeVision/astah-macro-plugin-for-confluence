@@ -8,11 +8,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import com.atlassian.confluence.setup.BootstrapManager;
+import com.change_vision.astah.exporter.DiagramFile;
+import com.change_vision.astah.exporter.DiagramJson;
+import com.change_vision.astah.exporter.ExportBaseDirectory;
+import com.change_vision.astah.exporter.ExportRootDirectory;
 import com.sun.jersey.api.NotFoundException;
 
 /**
@@ -21,23 +23,21 @@ import com.sun.jersey.api.NotFoundException;
 @Path("/attachment")
 public class ExportedFileResource {
 
-    private final String OUTPUT_BASE;
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final ExportBaseDirectory exportBase;
 
     public ExportedFileResource(BootstrapManager bootstrapManager) {
-        OUTPUT_BASE = bootstrapManager.getConfluenceHome() + File.separator + "astah-exported";
+        this.exportBase = new ExportBaseDirectory(bootstrapManager);
     }
 
     @GET
     @Produces({ "application/json; charset=utf-8" })
     @Path("/diagrams/{attachmentId}/{attachmentVersion}")
-    public String getDiagrams(@PathParam("attachmentId") Long attachmentId,
-            @PathParam("attachmentVersion") Long attachmentVersion) {
-        File idDir = new File(OUTPUT_BASE, attachmentId.toString());
-        File versionDir = new File(idDir, attachmentVersion.toString());
-        File file = new File(versionDir, "diagram.json");
+    public String getDiagrams(@PathParam("attachmentId") long attachmentId,
+            @PathParam("attachmentVersion") int attachmentVersion) {
+        ExportRootDirectory exportRoot = new ExportRootDirectory(exportBase, attachmentId, attachmentVersion);
+        DiagramJson diagramJson = new DiagramJson(exportRoot);
         try {
-            return FileUtils.readFileToString(file, "utf-8");
+            return diagramJson.readFile();
         } catch (IOException e) {
             String message = String.format("No such attachment. id:'%d' version:'%d'",
                     attachmentId, attachmentVersion);
@@ -48,16 +48,12 @@ public class ExportedFileResource {
     @GET
     @Produces({ "image/png" })
     @Path("/image/{attachmentId}/{attachmentVersion}/{index}.png")
-    public File getExportedFileImage(@PathParam("attachmentId") Long attachmentId,
-            @PathParam("attachmentVersion") Long attachmentVersion,
-            @PathParam("index") Integer index) throws JsonParseException, IOException {
-        File idDir = new File(OUTPUT_BASE, attachmentId.toString());
-        File versionDir = new File(idDir, attachmentVersion.toString());
-        File indexFile = new File(versionDir, "file.json");
-        String[] filePaths = mapper.readValue(indexFile, String[].class);
-        String filePath = filePaths[index];
-        File file = new File(OUTPUT_BASE, filePath);
-        return file;
+    public File getExportedFileImage(@PathParam("attachmentId") long attachmentId,
+            @PathParam("attachmentVersion") int attachmentVersion,
+            @PathParam("index") int index) throws JsonParseException, IOException {
+        ExportRootDirectory exportRoot = new ExportRootDirectory(exportBase, attachmentId, attachmentVersion);
+        DiagramFile file = new DiagramFile(exportRoot);
+        return file.getFile(index);
     }
 
 }

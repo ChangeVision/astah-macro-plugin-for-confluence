@@ -14,10 +14,12 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import com.atlassian.confluence.content.render.xhtml.ConversionContext;
+import com.atlassian.confluence.importexport.resource.WritableDownloadResourceManager;
 import com.atlassian.confluence.macro.MacroExecutionException;
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.pages.AttachmentManager;
 import com.atlassian.confluence.pages.Page;
+import com.atlassian.confluence.setup.BootstrapManager;
 
 /**
  * Testing {@link com.change_vision.astah.DiagramsMacro}
@@ -29,6 +31,12 @@ public class DiagramsMacroTest {
 
     @Mock
     private AttachmentManager attachmentManager;
+    
+    @Mock
+    private BootstrapManager bootstrapManager;
+    
+    @Mock
+    private WritableDownloadResourceManager exportDownloadResourceManager;
 
     @Mock
     private ConversionContext conversionContext;
@@ -56,7 +64,7 @@ public class DiagramsMacroTest {
         when(attachmentManager.getAttachment(page, attachmentAstahFile.getFileName())).thenReturn(
                 attachmentAstahFile);
 
-        DiagramsMacro macro = new DiagramsMacro(attachmentManager);
+        DiagramsMacro macro = new DiagramsMacro(attachmentManager, bootstrapManager, exportDownloadResourceManager);
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", attachmentAstahFile.getFileName());
         macro.execute(params, page.getContentEntityObject().getBodyAsString(), conversionContext);

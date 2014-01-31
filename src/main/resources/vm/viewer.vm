@@ -14,7 +14,11 @@
   <div id="${id}_main" class="main">
     <div id="${id}_contents" class="contents">
       <div id="${id}_diagram" class="diagram">
+        #if($generated)
+        <img src="${req.contextPath}/rest/astah/1.0/attachment/image/${attachmentId}/${attachmentVersion}/${number}.png" id="${id}_diagram_image" class="diagram_image"/>
+        #else
         <img src="${req.contextPath}/download/resources/com.change_vision.astah.astah-confluence-macro/images/loading.png" id="${id}_diagram_image" class="diagram_image"/>
+        #end
       </div>
     </div>
   </div>
@@ -24,6 +28,7 @@
   var theId = "${id}";
   var theAttachmentId = ${attachmentId};
   var theAttachmentVersion = ${attachmentVersion};
-  previewImage(contextPath, theId, theAttachmentId, theAttachmentVersion);
+  var theIndex = ${number};
+  previewImage(contextPath, theId, theAttachmentId, theAttachmentVersion, theIndex);
 </script>
 <span style="clear:both"></span>

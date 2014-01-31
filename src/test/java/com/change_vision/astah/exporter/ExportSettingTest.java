@@ -79,7 +79,7 @@ public class ExportSettingTest {
     
     @Test
     public void loadWithSettingFile() throws Exception {
-        URL resource = ExportSettingTest.class.getResource("export.ini");
+        URL resource = ExportSettingTest.class.getResource("astah/export.ini");
         File file = new File(resource.getFile());
         String[] args = setting.load(file);
         assertThat(args.length,is(2));
