@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.atlassian.confluence.setup.BootstrapManager;
+import com.change_vision.astah.exporter.DiagramExportRunnableTest;
 import com.change_vision.astah.file.AstahBaseDirectory;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -24,7 +25,7 @@ public class AstahBaseDirectoryTest {
 
     @Before
     public void before() throws Exception {
-        String validPath = AstahBaseDirectoryTest.class.getResource(".").getFile();
+        String validPath = DiagramExportRunnableTest.class.getResource(".").getFile();
         when(bootstrapManager.getConfluenceHome()).thenReturn(validPath);
     }
     
