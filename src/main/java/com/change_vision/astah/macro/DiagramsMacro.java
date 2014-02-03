@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.atlassian.confluence.content.render.xhtml.ConversionContext;
-import com.atlassian.confluence.core.ContentEntityObject;
 import com.atlassian.confluence.importexport.resource.DownloadResourceWriter;
 import com.atlassian.confluence.importexport.resource.WritableDownloadResourceManager;
 import com.atlassian.confluence.macro.DefaultImagePlaceholder;
@@ -24,6 +23,7 @@ import com.atlassian.confluence.macro.Macro;
 import com.atlassian.confluence.macro.MacroExecutionException;
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.pages.AttachmentManager;
+import com.atlassian.confluence.pages.PageManager;
 import com.atlassian.confluence.pages.thumbnail.Dimensions;
 import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
 import com.atlassian.confluence.setup.BootstrapManager;
@@ -37,30 +37,30 @@ import com.change_vision.astah.file.ExportBaseDirectory;
 import com.change_vision.astah.file.ExportRootDirectory;
 
 public class DiagramsMacro implements Macro, EditorImagePlaceholder {
-    
-    private static final String LOADING_IMAGE_PATH = "/download/resources/com.change_vision.astah.astah-confluence-macro/images/loading.png";
 
     private static final Logger logger = LoggerFactory.getLogger(DiagramsMacro.class);
 
     private final AttachmentManager attachmentManager;
 
     private final WritableDownloadResourceManager writableDownloadResourceManager;
+    
+    private final PageManager pageManager;
 
     private final ExportBaseDirectory exportBase;
     
-    public DiagramsMacro(AttachmentManager attachmentManager,BootstrapManager bootstrapManager,WritableDownloadResourceManager WritableDownloadResourceManager) {
+    public DiagramsMacro(AttachmentManager attachmentManager,BootstrapManager bootstrapManager,WritableDownloadResourceManager WritableDownloadResourceManager,PageManager pageManager) {
         this.attachmentManager = attachmentManager;
         this.exportBase = new ExportBaseDirectory(bootstrapManager);
         this.writableDownloadResourceManager = WritableDownloadResourceManager;
+        this.pageManager = pageManager;
     }
 
     @Override
     public String execute(Map<String, String> params, String bodyContent,
             ConversionContext conversionContext) throws MacroExecutionException {
-        int number = getPageNumber(params);
-        String attachmentTitle = params.get("name");
-        logger.trace("args name:'{}' number:'{}'", attachmentTitle, number);
-        Attachment targetAttachment = getAttachment(conversionContext, attachmentTitle);
+        DiagramsMacroParameter parameter = new DiagramsMacroParameter(pageManager, attachmentManager,conversionContext,params);
+        int number = parameter.getPageNumber();
+        Attachment targetAttachment = parameter.getAttachment();
         ExportRootDirectory exportRoot = new ExportRootDirectory(exportBase, targetAttachment);
         boolean isRenderSinglePage = isRenderPDF(conversionContext) || isRenderWord(conversionContext) || isRenderHTMLExport(conversionContext);
         if(isRenderSinglePage){
@@ -123,16 +123,6 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
         return "<img src=\""+ writer.getResourcePath() + "\"/>";
     }
 
-    private int getPageNumber(Map<String, String> params) throws MacroExecutionException {
-        String number = params.get("number");
-        if (number == null) return 0;
-        try {
-            return Integer.valueOf(number) - 1;
-        } catch (NumberFormatException e) {
-            throw new MacroExecutionException("Specified number is not Number.",e);
-        }
-    }
-
     private String renderDiagramsMacro(ExportRootDirectory exportRoot, int number) {
         Map<String, Object> context = MacroUtils.defaultVelocityContext();
         DiagramJson diagramsFile = getDiagramsFile(exportRoot);
@@ -160,12 +150,6 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
         return new DiagramJson(exportRoot);
     }
 
-    private Attachment getAttachment(ConversionContext conversionContext, String attachmentTitle) {
-        ContentEntityObject entity = conversionContext.getEntity();
-        Attachment targetAttachment = attachmentManager.getAttachment(entity, attachmentTitle);
-        return targetAttachment;
-    }
-
     @Override
     public BodyType getBodyType() {
         return BodyType.NONE;
@@ -179,16 +163,9 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
     @Override
     public ImagePlaceholder getImagePlaceholder(Map<String, String> params,
             ConversionContext conversionContext) {
-        String attachmentTitle = params.get("name");
-        Attachment targetAttachment = getAttachment(conversionContext, attachmentTitle);
-
-        int pageNumber = 0;
-        try {
-            pageNumber = getPageNumber(params);
-        } catch (MacroExecutionException e) {
-            logger.warn("can't parse pageNumber.",e);
-            return new DefaultImagePlaceholder(LOADING_IMAGE_PATH, new Dimensions(480, 320), false);
-        }
+        DiagramsMacroParameter parameter = new DiagramsMacroParameter(pageManager, attachmentManager, conversionContext, params);
+        Attachment targetAttachment = parameter.getAttachment();
+        int pageNumber = parameter.getPageNumber();
         String attachmentId = getAttachmentId(targetAttachment);
         String attachmentVersion = getAttachmentVersion(targetAttachment);
         String imagePath = getImagePath(pageNumber, attachmentId, attachmentVersion);
