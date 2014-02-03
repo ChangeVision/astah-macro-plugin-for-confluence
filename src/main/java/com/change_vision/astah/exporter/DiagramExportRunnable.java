@@ -15,6 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.atlassian.confluence.pages.Attachment;
+import com.change_vision.astah.file.AstahBaseDirectory;
+import com.change_vision.astah.file.ExportBaseDirectory;
+import com.change_vision.astah.file.ExportRootDirectory;
 import com.change_vision.astah.util.Util;
 
 public class DiagramExportRunnable implements Runnable {

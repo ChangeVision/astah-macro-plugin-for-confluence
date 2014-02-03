@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.setup.BootstrapManager;
+import com.change_vision.astah.file.AstahBaseDirectory;
+import com.change_vision.astah.file.ExportBaseDirectory;
 
 public class DiagramExportRunnableTest {
 

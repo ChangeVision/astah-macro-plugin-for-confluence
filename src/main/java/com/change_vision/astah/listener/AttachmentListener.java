@@ -15,9 +15,9 @@ import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.event.api.EventListener;
 import com.atlassian.event.api.EventPublisher;
-import com.change_vision.astah.exporter.AstahBaseDirectory;
 import com.change_vision.astah.exporter.DiagramExportRunnable;
-import com.change_vision.astah.exporter.ExportBaseDirectory;
+import com.change_vision.astah.file.AstahBaseDirectory;
+import com.change_vision.astah.file.ExportBaseDirectory;
 
 public class AttachmentListener implements DisposableBean {
 

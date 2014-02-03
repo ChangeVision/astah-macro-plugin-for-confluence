@@ -11,10 +11,10 @@ import javax.ws.rs.Produces;
 import org.codehaus.jackson.JsonParseException;
 
 import com.atlassian.confluence.setup.BootstrapManager;
-import com.change_vision.astah.exporter.DiagramFile;
-import com.change_vision.astah.exporter.DiagramJson;
-import com.change_vision.astah.exporter.ExportBaseDirectory;
-import com.change_vision.astah.exporter.ExportRootDirectory;
+import com.change_vision.astah.file.DiagramFile;
+import com.change_vision.astah.file.DiagramJson;
+import com.change_vision.astah.file.ExportBaseDirectory;
+import com.change_vision.astah.file.ExportRootDirectory;
 import com.sun.jersey.api.NotFoundException;
 
 /**

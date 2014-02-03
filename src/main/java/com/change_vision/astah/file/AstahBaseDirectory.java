@@ -1,4 +1,4 @@
-package com.change_vision.astah.exporter;
+package com.change_vision.astah.file;
 
 import java.io.File;
 

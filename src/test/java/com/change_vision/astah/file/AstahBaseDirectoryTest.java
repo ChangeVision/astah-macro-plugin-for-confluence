@@ -1,4 +1,4 @@
-package com.change_vision.astah.exporter;
+package com.change_vision.astah.file;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.atlassian.confluence.setup.BootstrapManager;
+import com.change_vision.astah.file.AstahBaseDirectory;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AstahBaseDirectoryTest {
