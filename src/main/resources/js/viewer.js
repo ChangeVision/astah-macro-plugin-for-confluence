@@ -39,6 +39,6 @@ function getDiagrams(contextPath, id, attachmentId, attachmentVersion, index){
       changeDiagram(contextPath, id, attachmentId, attachmentVersion, index);
     }
   ).error(function(){
-      setTimeout("getDiagrams('" + contextPath + "','" + id + "'," + attachmentId + "," + attachmentVersion + ")",5000);
+      setTimeout("getDiagrams('" + contextPath + "','" + id + "'," + attachmentId + "," + attachmentVersion + "," + index  + ")",5000);
   });
 }
