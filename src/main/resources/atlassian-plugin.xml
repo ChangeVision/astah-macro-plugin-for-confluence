@@ -9,10 +9,10 @@
     <resource type="i18n" name="i18n" location="astah" />
     <xhtml-macro name="astah"
                  class="com.change_vision.astah.macro.DiagramsMacro"
-                 key="astah"
+                 key="com.change_vision.astah.astah-confluence-macro.astah.label"
                  icon="/download/resources/com.change_vision.astah.astah-confluence-macro/images/class.png"
-                 labeh="Astah Diagrams">
-        <description>Inserts Astah diagrams in the pages</description>
+                 label="Astah Diagrams">
+        <description key="com.change_vision.astah.astah-confluence-macro.astah.desc"/>
         <category name="development"/>
         <category name="media"/>
         <parameters>
