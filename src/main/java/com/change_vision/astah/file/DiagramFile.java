@@ -13,6 +13,9 @@ public class DiagramFile {
     public File getFile(int index){
         FileIndexJson fileIndexJson = new FileIndexJson(exportRoot);
         String[] filePaths = fileIndexJson.getFilePaths();
+        if (filePaths.length == 0) {
+            return null;
+        }
         String filePath = filePaths[index];
         ExportBaseDirectory exportBase = exportRoot.getExportBase();
         return new File(exportBase.getDirectory(),filePath);

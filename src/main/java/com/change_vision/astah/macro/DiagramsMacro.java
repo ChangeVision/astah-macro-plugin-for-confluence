@@ -38,6 +38,8 @@ import com.change_vision.astah.file.ExportRootDirectory;
 
 public class DiagramsMacro implements Macro, EditorImagePlaceholder {
 
+    private static final String LOADING_IMAGE_PATH = "/download/resources/com.change_vision.astah.astah-confluence-macro/images/loading.png";
+
     private static final Logger logger = LoggerFactory.getLogger(DiagramsMacro.class);
 
     private final AttachmentManager attachmentManager;
@@ -169,6 +171,12 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
         String attachmentId = getAttachmentId(targetAttachment);
         String attachmentVersion = getAttachmentVersion(targetAttachment);
         String imagePath = getImagePath(pageNumber, attachmentId, attachmentVersion);
+        ExportRootDirectory exportRoot = new ExportRootDirectory(exportBase, attachmentId, attachmentVersion);
+        DiagramFile file = new DiagramFile(exportRoot);
+        File exported = file.getFile(0);
+        if (exported == null || exported.exists() == false) {
+            return new DefaultImagePlaceholder(LOADING_IMAGE_PATH, new Dimensions(480, 320), false);
+        }
         return new DefaultImagePlaceholder(imagePath, new Dimensions(480, 320), false);
     }
 

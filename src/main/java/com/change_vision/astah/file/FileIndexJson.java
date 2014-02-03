@@ -23,6 +23,10 @@ public class FileIndexJson {
 
     public String[] getFilePaths() {
         File indexFile = getFile();
+        if (indexFile.exists() == false) {
+            logger.info("not generated file.json : {}");
+            return new String[0];
+        }
         try {
             return mapper.readValue(indexFile, String[].class);
         } catch (IOException e) {

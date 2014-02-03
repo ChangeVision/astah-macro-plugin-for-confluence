@@ -19,6 +19,7 @@ import com.atlassian.confluence.macro.MacroExecutionException;
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.pages.AttachmentManager;
 import com.atlassian.confluence.pages.Page;
+import com.atlassian.confluence.pages.PageManager;
 import com.atlassian.confluence.setup.BootstrapManager;
 
 /**
@@ -40,6 +41,9 @@ public class DiagramsMacroTest {
 
     @Mock
     private ConversionContext conversionContext;
+
+    @Mock
+    private PageManager pageManager;
 
     @Before
     public void before() throws Exception {
@@ -64,7 +68,7 @@ public class DiagramsMacroTest {
         when(attachmentManager.getAttachment(page, attachmentAstahFile.getFileName())).thenReturn(
                 attachmentAstahFile);
 
-        DiagramsMacro macro = new DiagramsMacro(attachmentManager, bootstrapManager, exportDownloadResourceManager);
+        DiagramsMacro macro = new DiagramsMacro(attachmentManager, bootstrapManager, exportDownloadResourceManager, pageManager);
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", attachmentAstahFile.getFileName());
         macro.execute(params, page.getContentEntityObject().getBodyAsString(), conversionContext);

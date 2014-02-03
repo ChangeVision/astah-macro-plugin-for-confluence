@@ -22,6 +22,11 @@ public class ExportRootDirectory {
         initializeExportRoot(exportBase, attachmentId, attachmentVersion);
     }
 
+    public ExportRootDirectory(ExportBaseDirectory exportBase, String attachmentId,
+            String attachmentVersion) {
+        initializeExportRoot(exportBase, Long.valueOf(attachmentId), Integer.valueOf(attachmentVersion));
+    }
+
     private void initializeExportRoot(ExportBaseDirectory exportBase, long attachmentId,
             int attachmentVersion) {
         this.exportBase = exportBase;
