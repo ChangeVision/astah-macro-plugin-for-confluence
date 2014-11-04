@@ -143,7 +143,7 @@
     <properties>
         <confluence.version>4.2.2</confluence.version>
         <confluence.data.version>4.2.2</confluence.data.version>
-        <amps.version>4.2.12</amps.version>
+        <amps.version>5.0.4</amps.version>
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
     </properties>
 </project>
