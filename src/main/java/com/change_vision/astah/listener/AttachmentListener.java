@@ -27,6 +27,8 @@ public class AttachmentListener implements DisposableBean {
 
     private static final String EXTENSION_OF_JUDE_THINK = "juth";
 
+    private static final String EXTENSION_OF_JUDE_GSN = "agml";
+
     private static final Logger logger = LoggerFactory.getLogger(AttachmentListener.class);
 
     protected EventPublisher eventPublisher;
@@ -80,7 +82,7 @@ public class AttachmentListener implements DisposableBean {
     }
 
     private boolean isTargetExtension(String extension) {
-        return isAstah(extension) || isJude(extension) || isThink(extension);
+        return isAstah(extension) || isJude(extension) || isThink(extension) || isGsn(extension);
     }
 
     private boolean isAstah(String extension) {
@@ -93,6 +95,10 @@ public class AttachmentListener implements DisposableBean {
 
     private boolean isThink(String extension) {
         return extension != null && extension.equals(EXTENSION_OF_JUDE_THINK);
+    }
+
+    private boolean isGsn(String extension) {
+    	return extension != null && extension.equals(EXTENSION_OF_JUDE_GSN);
     }
 
     // Unregister the listener if the plugin is uninstalled or disabled.
