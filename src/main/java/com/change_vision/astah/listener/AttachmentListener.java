@@ -18,16 +18,9 @@ import com.atlassian.event.api.EventPublisher;
 import com.change_vision.astah.exporter.DiagramExportRunnable;
 import com.change_vision.astah.file.AstahBaseDirectory;
 import com.change_vision.astah.file.ExportBaseDirectory;
+import com.change_vision.astah.util.Util;
 
 public class AttachmentListener implements DisposableBean {
-
-    private static final String EXTENSION_OF_ASTA = "asta";
-
-    private static final String EXTENSION_OF_JUDE = "jude";
-
-    private static final String EXTENSION_OF_JUDE_THINK = "juth";
-
-    private static final String EXTENSION_OF_JUDE_GSN = "agml";
 
     private static final Logger logger = LoggerFactory.getLogger(AttachmentListener.class);
 
@@ -39,6 +32,8 @@ public class AttachmentListener implements DisposableBean {
     private final ExportBaseDirectory exportBase;
 
     private final AstahBaseDirectory astahBase;
+
+    private final Util util = new Util();
 
     public AttachmentListener(BootstrapManager bootstrapManager, EventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
@@ -67,7 +62,7 @@ public class AttachmentListener implements DisposableBean {
         for (final Attachment attachment : attachments) {
             logger.info("attachment : {}", attachment.getFileName());
             String extension = attachment.getFileExtension();
-            if (needsToExport(updateEvent, attachment) && isTargetExtension(extension)) {
+            if (needsToExport(updateEvent, attachment) && util.isTargetExtension(extension)) {
                 logger.info("start export : {}", attachment.getId());
                 DiagramExportRunnable runnable = new DiagramExportRunnable(attachment, astahBase,
                         exportBase);
@@ -79,26 +74,6 @@ public class AttachmentListener implements DisposableBean {
 
     private boolean needsToExport(boolean updateEvent, Attachment attachment) {
         return updateEvent || attachment.isNew();
-    }
-
-    private boolean isTargetExtension(String extension) {
-        return isAstah(extension) || isJude(extension) || isThink(extension) || isGsn(extension);
-    }
-
-    private boolean isAstah(String extension) {
-        return extension != null && extension.equals(EXTENSION_OF_ASTA);
-    }
-
-    private boolean isJude(String extension) {
-        return extension != null && extension.equals(EXTENSION_OF_JUDE);
-    }
-
-    private boolean isThink(String extension) {
-        return extension != null && extension.equals(EXTENSION_OF_JUDE_THINK);
-    }
-
-    private boolean isGsn(String extension) {
-    	return extension != null && extension.equals(EXTENSION_OF_JUDE_GSN);
     }
 
     // Unregister the listener if the plugin is uninstalled or disabled.
