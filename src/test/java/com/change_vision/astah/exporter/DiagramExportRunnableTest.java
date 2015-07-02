@@ -45,6 +45,9 @@ public class DiagramExportRunnableTest {
     private Attachment attachment6_8;
 
     @Mock
+    private Attachment gsnAttachment;
+
+    @Mock
     private Attachment noDiagramsAttachment;
 
     @Mock
@@ -100,6 +103,14 @@ public class DiagramExportRunnableTest {
             InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("test.txt");
             when(errorAttachment.getContentsAsStream()).thenReturn(stream);
         }
+
+        {
+            when(gsnAttachment.getId()).thenReturn(random.nextLong());
+            when(gsnAttachment.getVersion()).thenReturn(1);
+            when(gsnAttachment.getFileName()).thenReturn("test.agml");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("Sample.agml");
+            when(gsnAttachment.getContentsAsStream()).thenReturn(stream);
+        }
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -128,6 +139,16 @@ public class DiagramExportRunnableTest {
     }
 
     @Test
+    public void exportGsn() throws Exception {
+        runnable = new DiagramExportRunnable(gsnAttachment, astahBase, exportBase);
+        runnable.setTmpRoot(outputFolder);
+        runnable.run();
+        assertThat(runnable.success, is(true));
+        Collection<File> exportedFiles = FileUtils.listFiles(outputFolder, new String[]{"png"}, true);
+        assertThat(exportedFiles.size(),is(2));
+    }
+
+    @Test
     public void exportWithNoDiagrams() throws Exception {
         runnable = new DiagramExportRunnable(noDiagramsAttachment, astahBase, exportBase);
         runnable.setTmpRoot(outputFolder);
@@ -144,5 +165,4 @@ public class DiagramExportRunnableTest {
         runnable.run();
         assertThat(runnable.success, is(false));
     }
-
 }
