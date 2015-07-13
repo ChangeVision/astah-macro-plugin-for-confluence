@@ -52,6 +52,9 @@ public class AttachmentListenerTest {
     @Mock
     private Attachment attachmentNoExtensionFile;
 
+    @Mock
+    private Attachment attachementAgmlFile;
+
     private AttachmentListener listener;
 
     private ArrayList<Attachment> attachments;
@@ -81,6 +84,9 @@ public class AttachmentListenerTest {
 
         when(attachmentNoExtensionFile.getFileExtension()).thenReturn("");
         when(attachmentNoExtensionFile.getFileName()).thenReturn("test");
+
+        when(attachementAgmlFile.getFileExtension()).thenReturn("agml");
+        when(attachementAgmlFile.getFileName()).thenReturn("test.agml");
 
     }
 
@@ -131,6 +137,14 @@ public class AttachmentListenerTest {
     }
 
     @Test
+    public void createAttachementWithAgmlFile() throws Exception {
+        when(attachementAgmlFile.isNew()).thenReturn(true);
+        attachments.add(attachementAgmlFile);
+        listener.attachmentCreateEvent(createEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
     public void updateAttachmentWithTextFile() throws Exception {
         attachments.add(attachmentTextFile);
         listener.attachmentUpdateEvent(updateEvent);
@@ -161,6 +175,13 @@ public class AttachmentListenerTest {
     @Test
     public void updateAttachmentWithJuthFile() throws Exception {
         attachments.add(attachmentJuthFile);
+        listener.attachmentUpdateEvent(updateEvent);
+        verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
+    }
+
+    @Test
+    public void updateAttachementWithAgmlFile() throws Exception {
+        attachments.add(attachementAgmlFile);
         listener.attachmentUpdateEvent(updateEvent);
         verify(scheduledExecutorService).execute(any(DiagramExportRunnable.class));
     }

@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,17 +30,37 @@ public class AstahBaseDirectoryTest {
         String validPath = DiagramExportRunnableTest.class.getResource(".").getFile();
         when(bootstrapManager.getConfluenceHome()).thenReturn(validPath);
     }
-    
+
     @Test
     public void isNotValidWhenBootstrapManagerIsNotInitialized() {
         AstahBaseDirectory astahBase = new AstahBaseDirectory(notInitializedBootstrapManager);
         assertThat(astahBase.isValid(),is(false));
     }
-    
+
     @Test
     public void isValidWhenBootstrapManagerIsInitialized() throws Exception {
         AstahBaseDirectory astahBase = new AstahBaseDirectory(bootstrapManager);
         assertThat(astahBase.isValid(),is(true));
     }
 
+    @Test
+    public void getGsnJarWithAgmlFile() throws Exception {
+        AstahBaseDirectory astahBase = new AstahBaseDirectory(bootstrapManager);
+        File astahJar = astahBase.getAstahJar(new File("test.agml"));
+        assertThat(astahJar.getName(),is("astah-gsn.jar"));
+    }
+
+    @Test
+    public void getCommunityJarWithAstaFile() throws Exception {
+        AstahBaseDirectory astahBase = new AstahBaseDirectory(bootstrapManager);
+        File astahJar = astahBase.getAstahJar(new File("test.asta"));
+        assertThat(astahJar.getName(),is("astah-community.jar"));
+    }
+
+    @Test
+    public void getCommunityJarWithTxtFile() throws Exception {
+        AstahBaseDirectory astahBase = new AstahBaseDirectory(bootstrapManager);
+        File astahJar = astahBase.getAstahJar(new File("test.txt"));
+        assertThat(astahJar.getName(),is("astah-community.jar"));
+    }
 }
