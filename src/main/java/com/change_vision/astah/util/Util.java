@@ -18,6 +18,11 @@ public class Util {
         }
     }
 
+    private static final String EXTENSION_OF_ASTA = "asta";
+    private static final String EXTENSION_OF_JUDE = "jude";
+    private static final String EXTENSION_OF_JUDE_THINK = "juth";
+    private static final String EXTENSION_OF_JUDE_GSN = "agml";
+
     public String getJavaCommandName() {
         return JAVA_COMMAND_NAME;
     }
@@ -74,6 +79,26 @@ public class Util {
             return fileName.substring(0, point);
         }
         return fileName;
+    }
+
+    public boolean isTargetExtension(String extension) {
+        return isAstah(extension) || isJude(extension) || isThink(extension) || isGsn(extension);
+    }
+
+    private boolean isAstah(String extension) {
+        return extension != null && extension.equals(EXTENSION_OF_ASTA);
+    }
+
+    private boolean isJude(String extension) {
+        return extension != null && extension.equals(EXTENSION_OF_JUDE);
+    }
+
+    private boolean isThink(String extension) {
+        return extension != null && extension.equals(EXTENSION_OF_JUDE_THINK);
+    }
+
+    public boolean isGsn(String extension) {
+        return extension != null && extension.equals(EXTENSION_OF_JUDE_GSN);
     }
 
 }

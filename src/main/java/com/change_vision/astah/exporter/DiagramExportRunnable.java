@@ -106,7 +106,7 @@ public class DiagramExportRunnable implements Runnable {
         commands.add("-Djava.awt.headless=true");
         commands.add("-Dcheck_jvm_version=false");
         commands.add("-cp");
-        commands.add(astahBase.getCommunityJar().getAbsolutePath());
+        commands.add(astahBase.getAstahJar(file).getAbsolutePath());
         commands.add("com.change_vision.jude.cmdline.JudeCommandRunner");
         commands.add("-image");
         commands.add( "all");

@@ -1,1 +1,1 @@
-AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage("astah", ["asta", "jude", "juth"]);
+AJS.MacroBrowser.activateSmartFieldsAttachmentsOnPage("astah", ["asta", "jude", "juth", "agml"]);
