@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.change_vision.astah</groupId>
     <artifactId>astah-confluence-macro</artifactId>
-    <version>1.3.2-SNAPSHOT</version>
+    <version>1.3.2</version>
     <organization>
         <name>Change Vision inc,</name>
         <url>http://astah.net/</url>
@@ -16,8 +16,8 @@
         <connection>scm:git:git@github.com:ChangeVision/astah-macro-plugin-for-confluence.git</connection>
         <developerConnection>scm:git:git@github.com:ChangeVision/astah-macro-plugin-for-confluence.git</developerConnection>
         <url>scm:git:git@github.com/ChangeVision/astah-macro-plugin-for-confluence.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <dependencies>
         <dependency>
             <groupId>commons-io</groupId>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>com.atlassian.sal</groupId>
             <artifactId>sal-api</artifactId>
-            <version>2.6.1</version>
+            <version>3.0.5</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -74,10 +74,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-   			<groupId>javax.xml</groupId>
-   			<artifactId>jaxrpc-api</artifactId>
-   			<version>1.1</version>
-		</dependency>
+            <groupId>javax.xml</groupId>
+            <artifactId>jaxrpc-api</artifactId>
+            <version>1.1</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -145,18 +145,18 @@
                 </configuration>
             </plugin>
             <plugin>
-        		<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-release-plugin</artifactId>
-        		<version>2.5.2</version>
-      		</plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+            </plugin>
         </plugins>
     </build>
     <properties>
-        <confluence.version>5.8.5</confluence.version>
-        <confluence.data.version>5.8.5</confluence.data.version>
-        <amps.version>5.0.13</amps.version>
+        <confluence.version>5.9.1</confluence.version>
+        <confluence.data.version>5.9.1</confluence.data.version>
+        <amps.version>6.1.2</amps.version>
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 </project>
