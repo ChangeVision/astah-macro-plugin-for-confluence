@@ -29,7 +29,7 @@ public class PluginListener implements DisposableBean {
     public PluginListener(BootstrapManager bootstrapManager, EventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
         eventPublisher.register(this);
-        ASTAH_BASE = bootstrapManager.getConfluenceHome() + File.separator + "astah";
+        ASTAH_BASE = bootstrapManager.getLocalHome().getAbsolutePath() + File.separator + "astah";
     }
 
     @EventListener

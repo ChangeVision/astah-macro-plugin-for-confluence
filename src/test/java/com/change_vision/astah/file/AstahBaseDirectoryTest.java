@@ -28,7 +28,10 @@ public class AstahBaseDirectoryTest {
     @Before
     public void before() throws Exception {
         String validPath = DiagramExportRunnableTest.class.getResource(".").getFile();
-        when(bootstrapManager.getConfluenceHome()).thenReturn(validPath);
+        File localHome = new File(validPath);
+        when(bootstrapManager.getLocalHome()).thenReturn(localHome);
+        File invalidHome = new File("");
+        when(notInitializedBootstrapManager.getLocalHome()).thenReturn(invalidHome);
     }
 
     @Test

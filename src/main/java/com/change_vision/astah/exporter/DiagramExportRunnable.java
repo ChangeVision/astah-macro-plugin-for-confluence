@@ -230,7 +230,7 @@ public class DiagramExportRunnable implements Runnable {
     private File storeToTempDir(Attachment attachment) {
         try {
             long id = attachment.getId();
-            Integer attachmentVersion = attachment.getAttachmentVersion();
+            Integer attachmentVersion = attachment.getVersion();
             File tmpAttachmentRootDir = new File(tmpRoot, String.valueOf(id));
             File tmpDir = new File(tmpAttachmentRootDir, String.valueOf(attachmentVersion));
             tmpDir.mkdirs();

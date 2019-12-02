@@ -16,7 +16,7 @@ public class AstahBaseDirectory {
     private final Util util = new Util();
 
     public AstahBaseDirectory(BootstrapManager bootstrapManager){
-        astahBase = new File(bootstrapManager.getConfluenceHome(), "astah");
+        astahBase = new File(bootstrapManager.getLocalHome().getAbsolutePath(), "astah");
     }
 
     public File getDirectory(){
