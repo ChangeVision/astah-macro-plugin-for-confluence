@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.atlassian.confluence.content.render.image.ImageDimensions;
 import com.atlassian.confluence.content.render.xhtml.ConversionContext;
 import com.atlassian.confluence.importexport.resource.DownloadResourceWriter;
 import com.atlassian.confluence.importexport.resource.WritableDownloadResourceManager;
@@ -24,13 +25,12 @@ import com.atlassian.confluence.macro.MacroExecutionException;
 import com.atlassian.confluence.pages.Attachment;
 import com.atlassian.confluence.pages.AttachmentManager;
 import com.atlassian.confluence.pages.PageManager;
-import com.atlassian.confluence.pages.thumbnail.Dimensions;
 import com.atlassian.confluence.renderer.radeox.macros.MacroUtils;
 import com.atlassian.confluence.setup.BootstrapManager;
 import com.atlassian.confluence.user.AuthenticatedUserThreadLocal;
+import com.atlassian.confluence.user.ConfluenceUser;
 import com.atlassian.confluence.util.velocity.VelocityUtils;
 import com.atlassian.renderer.RenderContext;
-import com.atlassian.user.User;
 import com.change_vision.astah.file.DiagramFile;
 import com.change_vision.astah.file.DiagramJson;
 import com.change_vision.astah.file.ExportBaseDirectory;
@@ -93,7 +93,7 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
     }
 
     private String writeForExport(File file) {
-        User user = AuthenticatedUserThreadLocal.getUser();
+        ConfluenceUser user = AuthenticatedUserThreadLocal.get();
         String userName = user == null ? "" : user.getName();
         DownloadResourceWriter writer = writableDownloadResourceManager.getResourceWriter(userName, file.getName(), "");
         OutputStream outputStream = writer.getStreamForWriting();
@@ -139,7 +139,7 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
     }
 
     private String getAttachmentVersion(Attachment targetAttachment) {
-        Integer attachmentVersion = targetAttachment.getAttachmentVersion();
+        Integer attachmentVersion = targetAttachment.getVersion();
         return String.valueOf(attachmentVersion);
     }
 
@@ -175,9 +175,9 @@ public class DiagramsMacro implements Macro, EditorImagePlaceholder {
         DiagramFile file = new DiagramFile(exportRoot);
         File exported = file.getFile(0);
         if (exported == null || exported.exists() == false) {
-            return new DefaultImagePlaceholder(LOADING_IMAGE_PATH, new Dimensions(480, 320), false);
+            return new DefaultImagePlaceholder(LOADING_IMAGE_PATH, false, new ImageDimensions(480, 320));
         }
-        return new DefaultImagePlaceholder(imagePath, new Dimensions(480, 320), false);
+        return new DefaultImagePlaceholder(imagePath, false, new ImageDimensions(480, 320));
     }
 
     private String getImagePath(int pageNumber, String attachmentId, String attachmentVersion) {

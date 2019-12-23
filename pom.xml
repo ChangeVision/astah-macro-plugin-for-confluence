@@ -131,7 +131,7 @@
         <plugins>
             <plugin>
                 <groupId>com.atlassian.maven.plugins</groupId>
-                <artifactId>maven-confluence-plugin</artifactId>
+                <artifactId>confluence-maven-plugin</artifactId>
                 <version>${amps.version}</version>
                 <extensions>true</extensions>
                 <configuration>
@@ -158,9 +158,9 @@
         </plugins>
     </build>
     <properties>
-        <confluence.version>6.7.1</confluence.version>
-        <confluence.data.version>6.7.1</confluence.data.version>
-        <amps.version>6.3.15</amps.version>
+        <confluence.version>7.2.0</confluence.version>
+        <confluence.data.version>7.2.0</confluence.data.version>
+        <amps.version>8.0.2</amps.version>
         <plugin.testrunner.version>1.1</plugin.testrunner.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

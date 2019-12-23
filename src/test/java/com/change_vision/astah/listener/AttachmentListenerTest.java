@@ -5,6 +5,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -63,6 +64,8 @@ public class AttachmentListenerTest {
     public void before() throws Exception {
         MockitoAnnotations.initMocks(this);
 
+        File localHome = new File("");
+        when(bootstrapManager.getLocalHome()).thenReturn(localHome);
         listener = new AttachmentListener(bootstrapManager, eventPublisher);
         listener.setScheduledExecutorService(scheduledExecutorService);
 

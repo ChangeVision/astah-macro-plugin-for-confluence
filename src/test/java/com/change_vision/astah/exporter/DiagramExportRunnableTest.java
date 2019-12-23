@@ -64,7 +64,8 @@ public class DiagramExportRunnableTest {
         MockitoAnnotations.initMocks(this);
 
         String confluenceHome = DiagramExportRunnableTest.class.getResource(".").getFile();
-        when(bootstrapManager.getConfluenceHome()).thenReturn(confluenceHome);
+        File localHome = new File(confluenceHome);
+        when(bootstrapManager.getLocalHome()).thenReturn(localHome);
         astahBase = new AstahBaseDirectory(bootstrapManager);
 
         when(exportBase.getDirectory()).thenReturn(folder.newFolder());

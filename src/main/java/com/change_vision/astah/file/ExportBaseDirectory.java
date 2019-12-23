@@ -9,7 +9,7 @@ public class ExportBaseDirectory {
     private final File exportBase;
     
     public ExportBaseDirectory(BootstrapManager bootstrapManager){
-        exportBase = new File(bootstrapManager.getConfluenceHome(), "astah-exported");
+        exportBase = new File(bootstrapManager.getLocalHome().getAbsolutePath(), "astah-exported");
     }
     
     public File getDirectory(){

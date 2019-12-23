@@ -71,7 +71,7 @@ public class DiagramsMacroTest {
         DiagramsMacro macro = new DiagramsMacro(attachmentManager, bootstrapManager, exportDownloadResourceManager, pageManager);
         Map<String, String> params = new HashMap<String, String>();
         params.put("name", attachmentAstahFile.getFileName());
-        macro.execute(params, page.getContentEntityObject().getBodyAsString(), conversionContext);
+        macro.execute(params, page.getEntity().getBodyAsString(), conversionContext);
     }
 
 }
