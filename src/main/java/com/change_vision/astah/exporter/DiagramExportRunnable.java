@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -212,8 +213,13 @@ public class DiagramExportRunnable implements Runnable {
         }
     }
 
-    private void traverseFiles(File outputRoot, List<File> pngFiles) {
+    void traverseFiles(File outputRoot, List<File> pngFiles) {
         File[] files = outputRoot.listFiles();
+        if (files == null) {
+            return;
+        }
+        Arrays.sort(files);
+
         for (File file : files) {
             if (file.isDirectory()) {
                 traverseFiles(file, pngFiles);

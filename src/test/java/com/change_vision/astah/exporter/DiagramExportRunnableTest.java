@@ -1,12 +1,14 @@
 package com.change_vision.astah.exporter;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
@@ -166,4 +168,32 @@ public class DiagramExportRunnableTest {
         runnable.run();
         assertThat(runnable.success, is(false));
     }
+
+    @Test
+    public void traverseFiles_outputResultsMustAlwaysBeInSameOrder() throws Exception {
+        runnable = new DiagramExportRunnable(attachment, deletedAsathBase, exportBase);
+
+        File rootDir = new File(outputFolder, "rootDir" + Math.random());
+        rootDir.mkdir();
+        File zzzPng = new File(rootDir, "zzz.png");
+        zzzPng.createNewFile();
+        File o01Png = new File(rootDir, "001.png");
+        o01Png.createNewFile();
+        File abcPng = new File(rootDir, "abc.png");
+        abcPng.createNewFile();
+        File aaaPng = new File(rootDir, "aaa.png");
+        aaaPng.createNewFile();
+
+        List<File> pngFiles = new ArrayList<File>();
+        runnable.traverseFiles(rootDir, pngFiles);
+        assertThat(pngFiles.size(), is(4));
+        assertThat(pngFiles.get(0), is(o01Png));
+        assertThat(pngFiles.get(1), is(aaaPng));
+        assertThat(pngFiles.get(2), is(abcPng));
+        assertThat(pngFiles.get(3), is(zzzPng));
+
+        rootDir.delete();
+
+    }
+
 }
