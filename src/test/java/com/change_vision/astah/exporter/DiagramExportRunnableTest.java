@@ -43,8 +43,22 @@ public class DiagramExportRunnableTest {
     @Mock
     private Attachment attachment;
 
+    /** 
+     * astah 8.3に同梱しているプロジェクトファイル
+     * Sample8.3.astah
+     */
+    @Mock
+    private Attachment attachmentSample8_3;
+
     @Mock
     private Attachment attachment6_8;
+
+    /**
+     * モデルバージョン39のテスト用プロジェクトファイル
+     * astah_professional8.3(39).asta
+     */
+    @Mock
+    private Attachment attachmentVersion8_3;
 
     @Mock
     private Attachment gsnAttachment;
@@ -84,11 +98,27 @@ public class DiagramExportRunnableTest {
         }
 
         {
+            when(attachmentSample8_3.getId()).thenReturn(random.nextLong());
+            when(attachmentSample8_3.getVersion()).thenReturn(1);
+            when(attachmentSample8_3.getFileName()).thenReturn("test.asta");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("Sample8.3.asta");
+            when(attachmentSample8_3.getContentsAsStream()).thenReturn(stream);
+        }
+
+        {
             when(attachment6_8.getId()).thenReturn(random.nextLong());
             when(attachment6_8.getVersion()).thenReturn(1);
             when(attachment6_8.getFileName()).thenReturn("6_8.asta");
             InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("astah_professional6.8(37)_remove_UseCaseDescription.asta");
             when(attachment6_8.getContentsAsStream()).thenReturn(stream);
+        }
+
+        {
+            when(attachmentVersion8_3.getId()).thenReturn(random.nextLong());
+            when(attachmentVersion8_3.getVersion()).thenReturn(1);
+            when(attachmentVersion8_3.getFileName()).thenReturn("8_3.asta");
+            InputStream stream = DiagramExportRunnableTest.class.getResourceAsStream("astah_professional8.3(39).asta");
+            when(attachmentVersion8_3.getContentsAsStream()).thenReturn(stream);
         }
 
         {
@@ -132,6 +162,16 @@ public class DiagramExportRunnableTest {
     }
 
     @Test
+    public void exportSample8_3() throws Exception {
+        runnable = new DiagramExportRunnable(attachmentSample8_3, astahBase, exportBase);
+        runnable.setTmpRoot(outputFolder);
+        runnable.run();
+        assertThat(runnable.success, is(true));
+        Collection<File> exportedFiles = FileUtils.listFiles(outputFolder, new String[]{"png"}, true);
+        assertThat(exportedFiles.size(),is(25));
+    }
+
+    @Test
     public void export6_8() throws Exception {
         runnable = new DiagramExportRunnable(attachment6_8, astahBase, exportBase);
         runnable.setTmpRoot(outputFolder);
@@ -139,6 +179,16 @@ public class DiagramExportRunnableTest {
         assertThat(runnable.success, is(true));
         Collection<File> exportedFiles = FileUtils.listFiles(outputFolder, new String[]{"png"}, true);
         assertThat(exportedFiles.size(),is(48));
+    }
+
+    @Test
+    public void exportVersion8_3() throws Exception {
+        runnable = new DiagramExportRunnable(attachmentVersion8_3, astahBase, exportBase);
+        runnable.setTmpRoot(outputFolder);
+        runnable.run();
+        assertThat(runnable.success, is(true));
+        Collection<File> exportedFiles = FileUtils.listFiles(outputFolder, new String[]{"png"}, true);
+        assertThat(exportedFiles.size(),is(59));
     }
 
     @Test
